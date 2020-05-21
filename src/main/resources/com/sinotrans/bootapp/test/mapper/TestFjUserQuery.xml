@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.bootapp.test.mapper"> 
+	<select id="TestFjUserQuery" parameterType="map" resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+		select * from FJ_USER a where 1=1
+		<if test="sqlCond.fjurId!=null">
+		   and a.fjur_id  = #{sqlCond.fjurId}
+		</if>
+		<if test="sqlCond.fjurStatus!=null">
+		   and a.fjur_status > #{sqlCond.fjurStatus}
+		</if>
+		<if test="sqlCond.fjurFjogId!=null">
+		   and a.fjur_fjog_id  like '%'||#{sqlCond.fjurFjogId}||'%'
+		</if>
+		<if test="sqlCond.fjurUsername!=null">
+		   and a.fjur_username like '%'||#{sqlCond.fjurUsername}||'%'
+		</if>
+		  and <include refid="util.COMMON_DYN_SQL" />
+		  and <include refid="util.DATA_AUTH" />
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

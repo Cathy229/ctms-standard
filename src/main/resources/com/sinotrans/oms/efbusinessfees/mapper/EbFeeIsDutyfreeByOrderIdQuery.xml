@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.efbusinessfees.mapper"> 
+    <select id="EbFeeIsDutyfreeByOrderIdQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT EBFH.EBFH_IS_DUTYFREE
+		  FROM EF_BUSINESS_FEES EFBF
+		  LEFT JOIN EB_FEE_HEAD EBFH
+		    ON EBFH.EBFH_ID = EFBF.EFBF_EBFH_ID
+		 WHERE 1 = 1
+		 <if test="sqlCond.efbfEoorId !='' and sqlCond.efbfEoorId !=null">
+       		AND  EFBF.EFBF_EOOR_ID=#{sqlCond.efbfEoorId}
+   		 </if>
+   		 <if test="sqlCond.efbfIds !='' and sqlCond.efbfIds !=null">
+   		    AND  efbf.efbf_id in
+   		 	<foreach collection="sqlCond.efbfIds" item="efbfIds" index="index" open="(" close=")" separator=",">
+       			#{efbfIds}
+    		</foreach>
+   		 </if>
+   		 AND EBFH.EBFH_IS_DUTYFREE NOT IN
+		       (SELECT EFBI.EFBM_ATTRIBUTE_098
+		          FROM EF_BMS_IM EFBI
+		         WHERE EFBI.EFBM_BMS_SOURCE_ID LIKE '%' || EFBF.EFBF_EOOR_ID || '%')
+ 		GROUP BY EBFH.EBFH_IS_DUTYFREE
+		<include refid="util.POST_SQL"></include>
+	</select>
+	<!-- 判断上传的费用的免税类型 -->
+	<select id="EfBusinessSettementFeesQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		select efbf.*
+		  from ef_business_fees efbf
+		  left join eb_fee_head ebfh
+		    on efbf.efbf_ebfh_id = ebfh.ebfh_id
+		 where 1 = 1
+		 <if test="sqlCond.efbfEoorId !='' and sqlCond.efbfEoorId !=null">
+       		AND  efbf.efbf_eoor_id=#{sqlCond.efbfEoorId}
+   		 </if>
+   		 <if test="sqlCond.efbfIds !='' and sqlCond.efbfIds !=null">
+   		    AND  efbf.efbf_id in
+   		 	<foreach collection="sqlCond.efbfIds" item="efbfIds" index="index" open="(" close=")" separator=",">
+       			#{efbfIds}
+    		</foreach>
+   		 </if>
+   		 <if test="sqlCond.ebfhIsDutyfree !='' and sqlCond.ebfhIsDutyfree !=null">
+       		AND  ebfh.ebfh_is_dutyfree=#{sqlCond.ebfhIsDutyfree}
+   		 </if>
+   		 <if test="sqlCond.ebfhNotDutyfree !='' and sqlCond.ebfhNotDutyfree !=null or sqlCond.ebfhNotDutyfree == 0">
+       		AND  ebfh.ebfh_is_dutyfree=#{sqlCond.ebfhNotDutyfree}
+   		 </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+	<!-- 收集上传bms配置信息 -->
+	<select id="UpToBmsCheckQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT EBPJ.EBPJ_BMS_EBBT_CODE,
+		       EBPJ.EBPJ_BMS_EBSM_CODE,
+		       EBPJ.EBPJ_BMS_ESDE_DEPARTMENT_CODE,
+		       EBPJ.EBPJ_BMS_A_EBCU_CUSTOMER_NO,
+		       EBPJ.EBPJ_PROJECT_CODE,
+		       EBPJ.EBPJ_F_CODE,
+		       EBUS.ESUS_BMS_EBSM_CODE,
+		       EBUS.ESUS_IS_SALESMAN,
+		       ESDE.ESDE_DEFAULT_BMS_EBSM_CODE,
+		       ESDE.ESDE_BMS_DEPARTMENT_CODE,
+		       EOOR.EOOR_CONSIGNOR_EBCU_CODE,
+		       EOOR.EOOR_F_CODE
+		  FROM EB_PROJECT EBPJ
+		  LEFT JOIN EO_ORDER EOOR
+		   ON EOOR.EOOR_EBPJ_ID = EBPJ.EBPJ_ID
+		  LEFT JOIN ES_USER EBUS
+		    ON EOOR.CREATOR = EBUS.ESUS_ID
+		  LEFT JOIN ES_DEPARTMENT ESDE
+		    ON EOOR.EOOR_ESCO_ID = ESDE.ESDE_ESCO_ID
+		    AND EOOR.EOOR_ESDE_ID=ESDE.ESDE_ID
+		 WHERE 1=1
+		 <if test="sqlCond.eoorId !='' and sqlCond.eoorId !=null">
+       		AND  eoor.eoor_id=#{sqlCond.eoorId}
+   		 </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

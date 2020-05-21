@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.fileupload.mapper"> 
+    <select id="EbFileListQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+			SELECT T.* 
+			FROM (
+				SELECT
+				  EBFL.EBFL_ID,
+				  EBFL.EBFL_SERVICER_ID,
+				  EBFL.EBFL_SERVICER_ADDRESS,
+				  EOOR.EOOR_SINO_NO,
+				  EOOR.EOOR_ORDER_NO,
+				  EOOR.EOOR_SO_NO,
+				  EOOR.EOOR_DO_NO,
+				  EBFL.EBFL_EOOR_ID,
+				  EBFL.EBFL_TYPE,
+				  EBFL.EBFL_NAME,
+				  EBFL.CREATE_TIME,
+				  EBFL.EBFL_SUBDATE1,
+				  EBFL.EBFL_SUBSTR3,--EBFL_SUBSTR3
+				  EOOR.EOOR_CONSIGNOR_EBCU_NAME,
+				  EOEA.EOEA_LOAD_PORT_NAME,
+				  EOEA.EOEA_DISCHARGE_PORT_NAME,
+				  EOOR.EOOR_Custom_Ebcu_Code,
+				  EOEA.EOEA_DISCHARGE_PORT_CODE,
+				  EOEA.EOEA_LOAD_PORT_CODE,
+				  EOOR.EOOR_CONSIGNOR_EBCU_CODE
+				FROM EB_FILE EBFL,EO_ORDER EOOR,EO_ORDER_EXPAND_AGENCY EOEA
+				WHERE  eoor.eoor_source = '11' 
+				and EBFL.EBFL_EOOR_ID = EOOR.EOOR_ID 
+				AND EOOR.EOOR_ID = EOEA.EOEA_EOOR_ID
+				<if test="sqlCond.eoorEscoId !='' and sqlCond.eoorEscoId !=null">
+					AND EOOR.EOOR_ESCO_ID=#{sqlCond.eoorEscoId}
+				</if>
+				) T
+			WHERE 1=1
+	   <if test="sqlCond.eoorSinoNo !='' and sqlCond.eoorSinoNo !=null">
+	       AND  T.EOOR_SINO_NO=#{sqlCond.eoorSinoNo}
+	   </if>
+	   <if test="sqlCond.ebflEoorId !=null">
+	       AND  T.EBFL_EOOR_ID=#{sqlCond.ebflEoorId}
+	   </if>
+	   <if test="sqlCond.eoorOrderNo !='' and sqlCond.eoorOrderNo !=null">
+	       AND  T.EOOR_ORDER_NO=#{sqlCond.eoorOrderNo}
+	   </if>
+	   <if test="sqlCond.eoorSoNo !='' and sqlCond.eoorSoNo !=null">
+	       AND  T.EOOR_SO_NO=#{sqlCond.eoorSoNo}
+	   </if>
+	   <if test="sqlCond.ebflType !='' and sqlCond.ebflType !=null">
+	       AND  T.EBFL_TYPE=#{sqlCond.ebflType}
+	   </if>
+	   <if test="sqlCond.ebflName !='' and sqlCond.ebflName !=null">
+	       AND  T.EBFL_NAME LIKE CONCAT(CONCAT('%',#{sqlCond.ebflName}),'%')
+	   </if>
+	   <if test="sqlCond.eoorConsignorEbcuCode !='' and sqlCond.eoorConsignorEbcuCode !=null">
+	       AND  T.EOOR_CONSIGNOR_EBCU_CODE=#{sqlCond.eoorConsignorEbcuCode}
+	   </if>
+	   <if test="sqlCond.eoorOwnerEbcuCustomerNo !='' and sqlCond.eoorOwnerEbcuCustomerNo !=null">
+	       AND  T.EOOR_OWNER_EBCU_CODE=#{sqlCond.eoorOwnerEbcuCustomerNo}
+	   </if>
+	   <if test="sqlCond.eoeaLoadPortCode !='' and sqlCond.eoeaLoadPortCode !=null">
+	       AND  T.EOEA_LOAD_PORT_CODE=#{sqlCond.eoeaLoadPortCode}
+	   </if>
+	   <if test="sqlCond.eoeaDischargePortCode !='' and sqlCond.eoeaDischargePortCode !=null">
+	       AND  T.EOEA_DISCHARGE_PORT_CODE=#{sqlCond.eoeaDischargePortCode}
+	   </if>
+	   <if test="sqlCond.beginUploadTime !=null and sqlCond.endUploadTime !=null">
+	       AND  (T.CREATE_TIME > #{sqlCond.beginUploadTime} AND T.CREATE_TIME > #{sqlCond.endUploadTime})
+	   </if>
+	   <if test="sqlCond.ebflUploader !=null and sqlCond.ebflUploader !=''">
+	       AND  T.EBFL_UPLOADER=#{sqlCond.ebflUploader}
+	   </if>
+	   <if test="sqlCond.eoor_fields !='' and sqlCond.eoor_fields !=null">
+	   	   AND(		
+		   			T.EOOR_SINO_NO like CONCAT(CONCAT('%',#{sqlCond.eoor_fields}),'%')
+	    		OR  T.EOOR_ORDER_NO like CONCAT(CONCAT('%',#{sqlCond.eoor_fields}),'%')
+	    		OR  T.EOOR_SO_NO like CONCAT(CONCAT('%',#{sqlCond.eoor_fields}),'%')
+	    		OR  T.EOOR_DO_NO like CONCAT(CONCAT('%',#{sqlCond.eoor_fields}),'%')
+		      )
+	   </if>
+	   ORDER BY T.CREATE_TIME DESC
+	   <include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

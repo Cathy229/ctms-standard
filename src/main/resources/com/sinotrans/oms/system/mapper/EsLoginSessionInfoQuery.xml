@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.system.mapper"> 
+    <select id="EsLoginSessionInfoQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+			SELECT ESUS.ESUS_ID,
+			       ESUS.ESUS_ESCO_ID,
+			       ESUS.ESUS_ESDE_ID,
+			       ESUS.ESUS_LOGIN_NAME,
+			       ESUS.ESUS_LOGIN_PWD,
+			       ESUS.ESUS_TEMPLATE_ID,
+			       ESUS.ESUS_EMAIL,
+			       ESUS.ESUS_USER_NAME_CN,
+			       ESUS.ESUS_USER_NAME_EN,
+			       ESUS.ESUS_DEFAULT_ESST_ID,
+			       ESCO.ESCO_COMPANY_NAME_CN,
+			       ESCO.ESCO_COMPANY_NAME_EN,
+			       ESCO.ESCO_COMPANY_NO,
+			       ESUS.ESUS_IS_SUPERUSER
+			  FROM ES_USER ESUS
+			  LEFT JOIN ES_COMPANY ESCO ON ESUS.ESUS_ESCO_ID = ESCO.ESCO_ID
+			 WHERE 1=1 
+			   <if test="sqlCond.esusId !='' and sqlCond.esusId !=null">
+			       AND ESUS.ESUS_ID=#{sqlCond.esusId}
+			   </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+	
+	<!-- 登录时，查询公司是否启用 -->
+	<select id="EsCompanyStatusEnableByUserIdQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+			SELECT ESUS.ESUS_ISENABLE,
+			       ESUS.ESUS_ID,
+			       ESUS.ESUS_ESCO_ID,
+			       ESUG.ESUG_USER_GROUP_NAME,
+			       ESUG.ESUG_STATUS,
+			       ESCO.ESCO_STATUS
+			  FROM ES_USER ESUS
+			  LEFT JOIN ES_ESUG_2_ESUS ESUU
+			    ON ESUS.ESUS_ID = ESUU.ESUU_ESUS_ID
+			  LEFT JOIN ES_USER_GROUP ESUG
+			    ON ESUU.ESUU_ESUG_ID = ESUG.ESUG_ID
+			  LEFT JOIN ES_COMPANY ESCO
+			    ON ESUG.ESUG_ESCO_ID = ESCO.ESCO_ID
+			 WHERE 1 = 1
+			   AND ESCO.ESCO_STATUS = 'ENABLE'
+			   AND ESUS.ESUS_ISENABLE = 'Y'
+			   <if test="sqlCond.esusId !='' and sqlCond.esusId !=null">
+			       AND ESUS.ESUS_ID=#{sqlCond.esusId}
+			   </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+	
+	<!-- 登录时，通过用户ID和项目所属公司查询用户下的项目信息 -->
+	<select id="EsProjectNameByUserIdQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+			SELECT EBPJ.EBPJ_ID, EBPJ.EBPJ_PROJECT_NAME, ESUS.ESUS_DEFAULT_PROJECT_ID
+			  FROM EB_PROJECT EBPJ
+			  LEFT JOIN EB_EBPJ_2_ESUS EBPU
+			    ON EBPJ.EBPJ_ID = EBPU.EBPU_EBPJ_ID
+			  LEFT JOIN ES_USER ESUS
+			    ON EBPU.EBPU_ESUS_ID = ESUS.ESUS_ID
+			 WHERE 1 = 1
+			   AND EBPJ.EBPJ_PROJECT_STATUS = 'ENABLE'
+			   <if test="sqlCond.esusId !='' and sqlCond.esusId !=null">
+			       AND ESUS.ESUS_ID=#{sqlCond.esusId}
+			   </if>
+			   <if test="sqlCond.ebpjEscoId !='' and sqlCond.ebpjEscoId !=null">
+			       AND EBPJ.EBPJ_ESCO_ID=#{sqlCond.ebpjEscoId}
+			   </if>
+			 ORDER BY EBPJ.EBPJ_PROJECT_NAME DESC
+			   
+		<include refid="util.POST_SQL"></include>
+	</select>
+	
+	<!-- 登录时，通过用户ID和项目所属公司查询用户下的项目信息 -->
+	<select id="EsExistsAdminUserGroupQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+			SELECT ESUG.ESUG_ID,
+			       ESUG.ESUG_USER_GROUP_CODE,
+			       ESUG.ESUG_USER_GROUP_NAME,
+			       ESUG.ESUG_IS_ADMIN_USER_GROUP
+			  FROM ES_USER_GROUP ESUG
+			  LEFT JOIN ES_ESUG_2_ESUS ESUU
+			    ON ESUG.ESUG_ID = ESUU.ESUU_ESUG_ID
+			  LEFT JOIN ES_USER ESUS
+			    ON ESUS.ESUS_ID = ESUU.ESUU_ESUS_ID
+			 WHERE ESUG.ESUG_STATUS = 'ENABLE'
+			   AND ESUS.ESUS_ISENABLE = 'Y'
+			   AND ESUG.ESUG_IS_ADMIN_USER_GROUP = 'Y'
+			   <if test="sqlCond.esusId !='' and sqlCond.esusId !=null">
+			       AND ESUS.ESUS_ID=#{sqlCond.esusId}
+			   </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

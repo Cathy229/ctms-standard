@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sinotrans.oms.eoor.mapper">
+	<select id="EoLandOrderTrackQuery" parameterType="map" resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+		   select distinct EOTA.EOTA_ID,
+       EOTA.EOTA_EOOR_ID,
+       EOTA.EOTA_ESCO_ID,
+       EOTA.EOTA_ETSP_ID,
+       EOTA.EOTA_NO,
+       EOTA.EOTA_SPLIT_STATUS,
+       EOTA.EOTA_TYPE,
+       EOTA.EOTA_STATUS,
+       EOTA.EOTA_ORDER,
+       EOTA.EOTA_SELF_ID,
+       EOTA.EOTA_SO_NO,
+       EOTA.EOTA_DO_NO,
+       EOTA.EOTA_LAND_EBCU_ID,
+       EOTA.EOTA_LAND_EBCU_NAME_CN,
+       EOTA.EOTA_CUSTOMER_EBCU_ID,
+       EOTA.EOTA_CUSTOMER_EBCU_NAME_CN,
+       EOTA.EOTA_URGENCY,
+       TO_CHAR(EOTA.EOTA_DELIVERY_REQ_TIME, 'yyyy-mm-dd hh24:mi:ss') EOTA_DELIVERY_REQ_TIME,
+       EOTA.EOTA_TASK_SCHEDULE_TIME,
+       TO_CHAR(EOTA.EOTA_ARRIVAL_REQ_TIME, 'yyyy-mm-dd hh24:mi:ss') EOTA_ARRIVAL_REQ_TIME,
+       EOTA.EOTA_MENTION_TIME,
+       EOTA.EOTA_TRANS_SPE_REQ,
+       EOTA.EOTA_RECEIVE_SPE_REQ,
+       EOTA.EOTA_LINE_DESC,
+       EOTA.EOTA_CONTAINER_TYPE,
+       EOTA.EOTA_CONTAINER_WEIGHT,
+       EOTA.EOTA_IS_WHITE_CARD,
+       EOTA.EOTA_IS_SHORT_BARGE,
+       EOTA.EOTA_IS_CHARTERED,
+       EOTA.EOTA_IS_TO_FIGHT,
+       EOTA.EOTA_FROM_EBRG_ID,
+       EOTA.EOTA_FROM_EBRG_NAME_CN,
+       EOTA.EOTA_TO_EBRG_ID,
+       EOTA.EOTA_TO_EBRG_NAME_CN,
+       EOTA.EOTA_WEIGHT,
+       EOTA.EOTA_NET_WEIGHT,
+       EOTA.EOTA_QUANTITY,
+       EOTA.EOTA_VOLUME,
+       EOTA.EOTA_DELIVERY_ADDRESS,
+       EOTA.EOTA_RECEIVE_ADDRESS,
+       EOTA.EOTA_REMARK,
+       EOTA.EOTA_LIBRARY_NO,
+       EOTA.EOTA_LIBRARY_TIME,
+       EOTA.EOTA_EBCU_ID,
+       EOTA.EOTA_EBCU_NAME_CN,
+       EOTA.EOTA_LIBRARY_NUMBER,
+       EOTA.EOTA_LIBRARY_QUANTITY,
+       EOTA.EOTA_LIBRARY_VOLUME,
+       EOTA.EOTA_LIBRARY_GW,
+       EOTA.EOTA_LIBRARY_NW,
+       EOTA.EOTA_BOOKING_EBCU_ID,
+       EOTA.EOTA_BOOKING_EBCU_NAME_CN,
+       EOTA.EOTA_BOOKING_NO,
+       EOTA.EOTA_CUSTOM_NO,
+       EOTA.EOTA_VESSEL,
+       EOTA.EOTA_VOYAGE,
+       EOTA.EOTA_DEPARTURE_DATE,
+       EOTA.EOTA_PLAN_DEPARTURE_DATE,
+       EOTA.EOTA_PLAN_ARRIVAL_DATE,
+       EOTA.EOTA_ARRIVAL_DATE,
+       EOTA.EOTA_PACKING_TIME,
+       EOTA.EOTA_SET_POST_TIME,
+       EOTA.EOTA_WEIGHT_TIME,
+       EOTA.EOTA_CUT_TIME,
+       EOTA.EOTA_START_EBPT_ID,
+       EOTA.EOTA_START_EBPT_NAME_CN,
+       EOTA.EOTA_END_EBPT_ID,
+       EOTA.EOTA_END_EBPT_NAME_CN,
+       EOTA.EOTA_MBL_NO,
+       EOTA.EOTA_HBL_NO,
+       EOTA.EOTA_ETCA_ID,
+       EOTA.EOTA_ETCA_NO,
+       EOTA.EOTA_TITLE_NO,
+       EOTA.EOTA_CUSTOM_TYPE,
+       EOTA.EOTA_FILE_NO,
+       EOTA.EOTA_FILE_TYPE,
+       EOTA.EOTA_RELEASE_TIME,
+       EOTA.EOTA_SEND_TIME,
+       EOTA.EOTA_BACK_TIME,
+       EOTA.EOTA_CUSTOM_PLACE,
+       EOTA.EOTA_PORT_EBCU_ID,
+       EOTA.EOTA_PORT_EBCU_NAME_CN,
+       EOTA.EOTA_PORT_ADDRESS,
+       EOTA.EOTA_PACKING_ADDRESS,
+       EOTA.EOTA_TALLY_DATE,
+       EOTA.EOTA_CUT_POST_DATE,
+       EOTA.EOTA_SUITCASE_TIME,
+       EOTA.EOTA_SUITCASE_ADDRESS,
+       EOTA.EOTA_IN_POST_DATE,
+       EOTA.EOTA_UP_SHIPPING_DATE,
+       EOTA.EOTA_REQ_ARRIVAL,
+       EOTA.EOTA_ACTUAL_ARRIVAL,
+       EOTA.EOTA_CONTACT,
+       EOTA.EOTA_SENT_CAR_INFO,
+       EOTA.EOTA_LEAVE_TIME,
+       EOTA.EOTA_DEPARTURE_REMARK,
+       EOTA.EOTA_PACKAGING,
+       EOTA.EOTA_PREENTRY_DATE,
+       EOTA.EOTA_PORT_TIME,
+       EOTA.EOTA_CHECK_DATE,
+       EOTA.EOTA_IS_SEWAGE_TANK,
+       EOTA.EOTA_PERFORM_DESC,
+       EOTA.EOTA_MODIFIER,
+       EOTA.EOTA_MODIFY_TIME,
+       EOTA.EOTA_CREATOR,
+       EOTA.EOTA_CREATE_TIME,
+       EOTA.EOTA_PACKAGE_REMARK,
+       EOTA.EOTA_INSPECTE_DATE,
+       EOTA.EOTA_CHECK_DESC,
+       EOTA.EOTA_IN_OUT,
+       EOTA.EOTA_RETURN_TANK_ADDRESS,
+       EOTA.EOTA_BACK_TANK_TIME,
+       EOTA.EOTA_PLAN_DELIVERY_DATE,
+       EOTA.EOTA_IS_DROP_TANK,
+       EOTA.EOTA_COLLECT_DATE,
+       EOTA.EOTA_CUSTOM_START_DATE,
+       EOTA.EOTA_CHANGE_DATE,
+       EOTA.EOTA_OBTAIN_DATE,
+       EOTA.EOTA_IN_PARK_TIME,
+       EOTA.EOTA_OUT_PARK_TIME,
+       EOTA.EOTA_IS_PORT_PLAN,
+       EOTA.EOTA_CUSTOM_END_DATE,
+       EOTA.EOTA_IN_WAREHOUSE_DATE,
+       EOTA.EOTA_FINISHED_DATE,
+       EOTA.EOTA_PAY_TAX_DATE,
+       EOTA.EOTA_TRAIN,
+       EOTA.EOTA_STOP_STATION_TIME,
+       EOTA.EOTA_STATION_TIME,
+       EOTA.EOTA_RAILWAY_TIME,
+       EOTA.EOTA_RETURN_DATE,
+       EOTA.EOTA_TEAM_EBCU_ID,
+       EOTA.EOTA_TEAM_EBCU_NAME_CN,
+       EOTA.EOTA_TERMINAL_EBCU_ID,
+       EOTA.EOTA_TERMINAL_EBCU_NAME_CN,
+       EOTA.EOTA_SUITCASE,
+       EOTA.EOTA_CRATES,
+       EOTA.EOTA_MAIN_ETTP_ID,
+       EOTA.EOTA_TRAILER_ETVE_CARD,
+       EOTA.EOTA_TRAILER_ETVE_ID,
+       EOTA.EOTA_TRACTOR_ETVE_CARD,
+       EOTA.EOTA_TRACTOR_ETVE_ID,
+       EOTA.EOTA_MAIN_ETTP_NAME,
+       EOTA.EOTA_COPILOR_ETTP_ID,
+       EOTA.EOTA_COPILOR_ETTP_NAME,
+       EOTA.EOTA_LAND_ETCA_ID,
+       EOTA.EOTA_LAND_ETCA_NO,
+       EOTA.EOTA_LAND_TITLE_NO,
+       EOTA.EOTA_ETTP_TEL,
+       EOTA.EOTA_CARRIER_EBCU_ID,
+       EOTA.EOTA_CARRIER_EBCU_NAME_CN,
+       EOTA.EOTA_EBLN_ID,
+       EOTA.EOTA_EBLN_LINE_NAME,
+       EOTA.EOTA_IS_WITHIN,
+       EOTA.EOTA_RATE_MILEAGE,
+       EOTA.EOTA_EOOC_ID,/*配箱ID*/
+       EOTA.EOTA_SUBNUM1,
+       EOTA.EOTA_SUBSTR1,
+       EOTA.EOTA_SUBSTR2,
+       EOTA.EOTA_SUBSTR3,
+       EOTA.EOTA_SUBSTR4,
+       EOTA.EOTA_SUBSTR5,
+       EOTA.EOTA_SUBSTR6,
+       EOTA.EOTA_SUBSTR8,
+       EOTA.EOTA_SUBSTR7,
+       EOTA.EOTA_SUBDATE1,
+       EOTA.EOTA_SUBDATE2,
+       EOTA.EOTA_SUBDATE5,
+       EOTA.EOTA_SUBDATE4,
+       EOTA.EOTA_SUBDATE3,
+       EOTA.EOTA_SUBNUM3,
+       EOTA.EOTA_SUBNUM2,
+       EOTT.EOTT_ID,
+       EOTT.EOTT_EOTA_ID,
+       EOTT.EOTT_ESCO_ID,
+       EOTT.EOTT_EOOR_ID,
+       EOTT.EOTT_ETSP_ID,
+       TO_CHAR(EOTT.EOTT_LOAD_TIME, 'yyyy-mm-dd hh24:mi:ss') EOTT_LOAD_TIME,
+       TO_CHAR(EOTT.EOTT_PLAN_DELIVERY_TIME, 'yyyy-mm-dd hh24:mi:ss') EOTT_PLAN_DELIVERY_TIME,
+       TO_CHAR(EOTT.EOTT_DELIVERY_TIME, 'yyyy-mm-dd hh24:mi:ss') EOTT_DELIVERY_TIME,
+       EOTT.EOTT_PLAN_ARRIVAL_TIME,
+       TO_CHAR(EOTT.EOTT_TO_LIBRARY_TIME, 'yyyy-mm-dd hh24:mi:ss') EOTT_TO_LIBRARY_TIME,
+       EOTT.EOTT_LOADED_TIME,
+       EOTT.EOTT_FROM_LIBRARY_TIME,
+       TO_CHAR(EOTT.EOTT_ARRIVAL_TIME, 'yyyy-mm-dd hh24:mi:ss') EOTT_ARRIVAL_TIME,
+       EOTT.EOTT_PLAN_DISCHARGE_TIME,
+       EOTT.EOTT_DISCHARGE_TIME,
+       EOTT.EOTT_IS_SIGN,
+       EOTT.EOTT_TO_SEKIBA_TIME,
+       EOTT.EOTT_FROM_SEKIBA_TIME,
+       EOTT.EOTT_LOADING_TIME,
+       EOTT.EOTT_IS_TILT,
+       EOTT.EOTT_IS_INVENTORY,
+       EOTT.EOTT_IS_CUSTOMER,
+       EOTT.EOTT_IS_KEEP,
+       EOTT.EOTT_DELIVERY_NO,
+       EOTT.EOTT_LOAD_EMPTY_WEIGHT,
+       EOTT.EOTT_LOAD_HEAVY_WEIGHT,
+       EOTT.EOTT_LOADING_QUANTITY,
+       EOTT.EOTT_UNLOAD_HEAVY_WEIGHT,
+       EOTT.EOTT_UNLOAD_EMPTY_WEIGHT,
+       EOTT.EOTT_UNLOADING_QUANTITY,
+       EOTT.EOTT_DIFFERENCE,
+       EOTT.EOTT_RECEIVE_NO,
+       EOTT.EOTT_THIRD_POUND,
+       EOTT.EOTT_THIRD_HEAVY_WEIGHT,
+       EOTT.EOTT_THIRD_EMPTY_WEIGHT,
+       EOTT.EOTT_THIRD_DIFF,
+       EOTT.EOTT_BUY_VOUCHER_TIME,
+       EOTT.EOTT_INSPECTE_TIME,
+       EOTT.EOTT_THROUGH_TIME,
+       EOTT.EOTT_APPLY_PASS_TIME,
+       EOTT.EOTT_GET_PASS_TIME,
+       EOTT.EOTT_APPROVE_TARN_TIME,
+       EOTT.EOTT_TO_CHARGE_SHEET_TIME,
+       EOTT.EOTT_FROM_CHARGE_SHEET_TIME,
+       EOTT.EOTT_TO_GUARD_TIME,
+       EOTT.EOTT_FROM_GUARD_TIME,
+       EOTT.EOTT_IS_TRANSFER,
+       EOTT.EOTT_SUBSTR1,
+       EOTT.EOTT_SUBSTR2,
+       EOTT.EOTT_SUBSTR3,
+       EOTT.EOTT_SUBSTR4,
+       EOTT.EOTT_SUBSTR5,
+       EOTT.EOTT_SUBSTR6,
+       EOTT.EOTT_SUBSTR8,
+       EOTT.EOTT_SUBSTR7,
+       EOTT.EOTT_SUBDATE1,
+       EOTT.EOTT_SUBDATE2,
+       EOTT.EOTT_SUBDATE5,
+       EOTT.EOTT_SUBDATE4,
+       EOTT.EOTT_SUBDATE3,
+       EOTT.EOTT_SUBNUM3,
+       EOTT.EOTT_SUBNUM2,
+       EOTT.EOTT_SUBNUM1,
+       EOTT.REC_VER,
+       EOTT.MODIFY_TIME,
+       EOTT.MODIFIER,
+       EOTT.CREATE_TIME,
+       EOTT.CREATOR,
+       EOTT.EOTT_DELIVERY_ETVE_ID,
+       EOTT.EOTT_DELIVERY_ETVE_CARD,
+       EOTT.EOTT_RECEIVE_EBCU_NAME_CN,
+       EOTT.EOTT_RECEIVE_EBCU_ID,
+       EOTT.EOTT_RECEIVE_ETVE_ID,
+       EOTT.EOTT_RECEIVE_ETVE_CARD,
+       EOOR.EOOR_EBPJ_NAME,
+       ETSP.ETSP_ID,
+       ETSP.ETSP_STATUS,
+       EOTA.EOTA_TRANSPORT_NO,/*运输单号*/
+       EOOR.EOOR_CONSIGNEE_EBSP_NAME_CN,
+       EOOR.EOOR_CONSIGNEE_EBSA_CONTACT,
+       EOOR.EOOR_CONSIGNEE_EBSA_TEL,
+       EOOR.EOOR_CONSIGNEE_EBSA_ADDRESS,
+       EOOR.EOOR_REQ_DELIVERY_DATE,
+       EOOR.EOOR_REQ_ARRIVAL_DATE,
+       EOTT.EOTT_REMARK,
+       EOTT.EOTT_THIRD_POUND_WEIGHT,
+       /*20100914提货司磅员;卸货司磅员;第三方司磅员;提货过磅日期;卸货过磅日期;第三方过磅日期;提货罐箱温度;卸货罐箱温度;第三方罐箱温度;签收人;*/
+       EOTT.EOTT_LOAD_PERSON,
+       EOTT.EOTT_UNLOAD_PERSON,
+       EOTT.EOTT_THIRD_PERSON,
+       EOTT.EOTT_LOAD_DATE,
+       EOTT.EOTT_UNLOAD_DATE,
+       EOTT.EOTT_THIRD_DATE,
+       EOTT.EOTT_LOAD_TEMPERATURE,
+       EOTT.EOTT_UNLOAD_TEMPERATURE,
+       EOTT.EOTT_THIRD_TEMPERATURE,
+       EOTT.EOTT_RECEIPIENT,
+       EOOR.EOOR_ORDER_FUDEJI,/*CHEM-1025 增加笔次显示*/
+       EOTT.EOTT_DELAY_SUPPLYCHAINID,
+       EOTT.EOTT_DELAY_CATEGORY,
+       EOTT.EOTT_DELAY_ACCOUNTABILITY,
+       EOTT.EOTT_DELAY_CAUSE,
+       EOTT.EOTT_DELAY_REMARK,
+       ebpj.ebpj_f_code,
+       ett.etta_substr4
+  from EO_TASK EOTA
+  left join EO_ORDER EOOR on EOTA.EOTA_EOOR_ID = EOOR.EOOR_ID
+  left join EO_TASK_TRACK EOTT on EOTA.EOTA_ID = EOTT.EOTT_EOTA_ID
+  left join ET_SCHEDULE_PLAN ETSP on EOTA.EOTA_ETSP_ID=ETSP.ETSP_ID
+    left join eb_project ebpj on ebpj.ebpj_id=eoor.eoor_ebpj_id
+ left join (select ETS.ETSP_ID,et.etta_substr4 from ET_SCHEDULE_PLAN ETS left join et_task et on et.etta_etsp_id=ETS.etsp_id)ett on EOTA.EOTA_ETSP_ID=ett.ETSP_ID /*增加et系列任务 简历与调度计划表相关的关系 randall 2016 8 5*/
+ where 1 = 1
+ <if test="sqlCond.eotaFromEbrgId !='' and sqlCond.eotaFromEbrgId !=null">
+    and EOTA.EOTA_FROM_EBRG_ID=#{sqlCond.eotaFromEbrgId}
+ </if>
+ <if test="sqlCond.eotaToEbrgId !='' and sqlCond.eotaToEbrgId !=null">
+ and EOTA.EOTA_TO_EBRG_ID=#{sqlCond.eotaToEbrgId}
+ </if>
+  <if test="sqlCond.eotaDeliveryReqTimeFrom !='' and sqlCond.eotaDeliveryReqTimeFrom !=null">
+ and to_char(EOTA.EOTA_DELIVERY_REQ_TIME,'yyyy-MM-dd') &gt;= #{sqlCond.eotaDeliveryReqTimeFrom}
+ </if>
+ <if test="sqlCond.eotaDeliveryReqTimeTo !='' and sqlCond.eotaDeliveryReqTimeTo !=null">
+ and to_char(EOTA.EOTA_DELIVERY_REQ_TIME,'yyyy-MM-dd') &lt;= #{sqlCond.eotaDeliveryReqTimeTo}
+ </if>
+ <if test="sqlCond.eotaArrivalReqTimeFrom !='' and sqlCond.eotaArrivalReqTimeFrom !=null">
+ and to_char(EOTA.EOTA_ARRIVAL_REQ_TIME,'yyyy-MM-dd') &gt;= #{sqlCond.eotaArrivalReqTimeFrom}
+ </if>
+ <if test="sqlCond.eotaArrivalReqTimeTo !='' and sqlCond.eotaArrivalReqTimeTo !=null">
+ and to_char(EOTA.EOTA_ARRIVAL_REQ_TIME,'yyyy-MM-dd') &lt;= #{sqlCond.eotaArrivalReqTimeTo}
+ </if>
+ <if test="sqlCond.eottPlanDeliveryTimeFrom !='' and sqlCond.eottPlanDeliveryTimeFrom !=null">
+ and to_char(EOTT.EOTT_PLAN_DELIVERY_TIME,'yyyy-MM-dd') &gt;= #{sqlCond.eottPlanDeliveryTimeFrom}
+ </if>
+ <if test="sqlCond.eottPlanDeliveryTimeTo !='' and sqlCond.eottPlanDeliveryTimeTo !=null">
+ and to_char(EOTT.EOTT_PLAN_DELIVERY_TIME,'yyyy-MM-dd') &lt;= #{sqlCond.eottPlanDeliveryTimeTo}
+ </if>
+ <if test="sqlCond.eottRemark !='' and sqlCond.eottRemark !=null">
+ and EOTT.EOTT_REMARK like ('%' || #{sqlCond.eottRemark} || '%')
+ </if>
+ <if test="sqlCond.eotaTractorEtveId !='' and sqlCond.eotaTractorEtveId !=null">
+ and EOTA.EOTA_TRACTOR_ETVE_ID=#{sqlCond.eotaTractorEtveId}
+ </if>
+ <if test="sqlCond.eotaMainEttpId !='' and sqlCond.eotaMainEttpId !=null">
+ and EOTA.EOTA_MAIN_ETTP_ID=#{sqlCond.eotaMainEttpId}
+ </if>
+ <if test="sqlCond.eotaCustomerEbcuId !='' and sqlCond.eotaCustomerEbcuId !=null">
+ and EOTA.EOTA_CUSTOMER_EBCU_ID=#{sqlCond.eotaCustomerEbcuId}
+ </if>
+ <if test="sqlCond.eoorEbpjId !='' and sqlCond.eoorEbpjId !=null">
+ and EOOR.EOOR_EBPJ_ID=#{sqlCond.eoorEbpjId}
+ </if>
+ <if test="sqlCond.creator !='' and sqlCond.creator !=null">
+/*没有选择项目是用户所属项目过滤*/
+ and EOOR.CREATOR=#{sqlCond.creator}
+ </if>
+ <if test="sqlCond.yesNoEoorOms !='' and sqlCond.yesNoEoorOms !=null">
+and(( #{sqlCond.yesNoEoorOms}='Y' and eoor.eoor_data_source='EAIOMS') or ( #{sqlCond.yesNoEoorOms}='N' and eoor.eoor_data_source!='EAIOMS' ))
+</if>
+<if test="sqlCond.eotaDoNo !='' and sqlCond.eotaDoNo !=null">
+ and EOTA.EOTA_DO_NO=#{sqlCond.eotaDoNo}
+ </if>
+ <if test="sqlCond.eotaNo !='' and sqlCond.eotaNo !=null">
+/*区域行车单做抵达时的查询条件-- add by tom 20141125*/
+/*区域行车单做抵达时的查询条件-- add by tom 20141125*/
+ and EOTA.EOTA_NO=#{sqlCond.eotaNo}
+ </if>
+ <if test="sqlCond.escoId !='' and sqlCond.escoId !=null">
+ and EOTA.EOTA_ESCO_ID=#{sqlCond.escoId}
+ </if>
+ <if test="sqlCond.eotaStatus !='' and sqlCond.eotaStatus !=null">
+ and EOTA.EOTA_STATUS=#{sqlCond.eotaStatus}
+ </if> 
+ <if test="sqlCond.eotaCarrierEbcuId !='' and sqlCond.eotaCarrierEbcuId !=null">
+ and EOTA.EOTA_CARRIER_EBCU_ID=#{sqlCond.eotaCarrierEbcuId}
+ </if>
+ <if test="sqlCond.eoorEbotId !='' and sqlCond.eoorEbotId !=null">
+ and EOOR.EOOR_EBOT_ID in #{sqlCond.eoorEbotId}
+ </if>
+ <if test="sqlCond.eotaSoNo !='' and sqlCond.eotaSoNo !=null">
+   and EOTA.EOTA_SO_NO in (${sqlCond.eotaSoNo}) 
+  </if>
+  and EOTA.EOTA_TYPE in('TASK_LAND','TASK_LINE') /*添加干线任务跟踪 add by daniel 20140116*/
+  and EOOR.EOOR_STATUS <![CDATA[ <> ]]> 'VOID'  /* 过滤订单状态为作废的订单*/
+  and EOOR.EOOR_STATUS <![CDATA[ <> ]]> 'ADD'  /* 过滤订单状态为新增的订单-- add by daniel 20130605*/
+  and EOTA.EOTA_SPLIT_STATUS <![CDATA[ <> ]]> '1'  /* 过滤被拆分的陆运任务*/
+  
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

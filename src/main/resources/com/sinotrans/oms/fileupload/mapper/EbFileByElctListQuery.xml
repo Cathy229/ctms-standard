@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.fileupload.mapper"> 
+    <select id="EbFileByElctListQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+--合同附件列表查询
+SELECT E.EBFL_ID, --文件ID
+	   E.EBFL_SERVICER_ID,
+       E.EBFL_SERVICER_ADDRESS,
+       E.EBFL_SUBDATE1,
+       E.EBFL_TYPE, --文件类型
+       E.EBFL_NAME, --文件名称
+       E.EBFL_ELCT_ID, --合同ID
+       EL.ELCT_CONTRACT_NUMBER, --合同流水号
+       EL.ELCT_CONTRACT_NO, --合同号
+       EL.ELCT_CONTRACT_NAME, --合同名称
+       EL.ELCT_CUSTOM_EBCU_ID, --客商ID
+       EL.ELCT_CUSTOM_EBCU_CODE, --客商CODE
+       EL.ELCT_CUSTOM_EBCU_NAME, --客商名称
+       EL.ELCT_CONTRACT_UNIT, --合同签署单位
+       EL.ELCT_CONTRACT_DATE --合同签署日期
+  FROM EB_FILE E, EL_CONTRACT EL
+ WHERE EL.ELCT_ID = E.EBFL_ELCT_ID
+  <if test="sqlCond.elctContractNumber !='' and sqlCond.elctContractNumber !=null">
+   AND EL.ELCT_CONTRACT_NUMBER = #{sqlCond.elctContractNumber}
+  </if>
+  <if test="sqlCond.eoorEscoId !='' and sqlCond.eoorEscoId !=null">
+		AND EL.ELCT_ESCO_ID=#{sqlCond.eoorEscoId}
+</if>
+  <if test="sqlCond.elctContractNo !='' and sqlCond.elctContractNo !=null">
+   AND EL.ELCT_CONTRACT_NO = #{sqlCond.elctContractNo}
+  </if>
+  <if test="sqlCond.elctContractName !='' and sqlCond.elctContractName !=null">
+   AND EL.ELCT_CONTRACT_NAME LIKE CONCAT(CONCAT('%',#{sqlCond.elctContractName}),'%')
+  </if>
+  <if test="sqlCond.elctCustomEbcuCode !='' and sqlCond.elctCustomEbcuCode !=null">
+   AND EL.ELCT_CUSTOM_EBCU_CODE = #{sqlCond.elctCustomEbcuCode}
+  </if>
+  <if test="sqlCond.elctContractUnit !='' and sqlCond.elctContractUnit !=null">
+   AND EL.ELCT_CONTRACT_UNIT = #{sqlCond.elctContractUnit}
+  </if>
+  <if test="sqlCond.elctContractDate !='' and sqlCond.elctContractDate !=null">
+   AND EL.ELCT_CONTRACT_DATE = TO_DATE(#{sqlCond.elctContractDate},'yyyy-MM-dd')
+  </if>
+  <if test="sqlCond.eoor_fields !='' and sqlCond.eoor_fields !=null">
+   AND(		
+	       EL.ELCT_CONTRACT_NUMBER like CONCAT(#{sqlCond.eoor_fields},'%')
+       OR  EL.ELCT_CONTRACT_NO like CONCAT(#{sqlCond.eoor_fields},'%')
+	  )
+  </if>
+ORDER BY E.CREATE_TIME DESC
+	   <include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

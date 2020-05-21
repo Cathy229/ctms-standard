@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.customerproject.mapper"> 
+    <select id="EsProjectNameByUserIdQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+	SELECT EBPJ.EBPJ_ID, EBPJ.EBPJ_PROJECT_NAME ,ESUS.ESUS_DEFAULT_PROJECT_ID
+  	FROM EB_PROJECT EBPJ
+ 	LEFT JOIN EB_EBPJ_2_ESUS EBPU ON EBPJ.EBPJ_ID = EBPU.EBPU_EBPJ_ID
+  	LEFT JOIN ES_USER ESUS ON EBPU.EBPU_ESUS_ID = ESUS.ESUS_ID
+ 	WHERE 1 = 1
+		AND EBPJ.EBPJ_PROJECT_STATUS='ENABLE'
+		<if test="sqlCond.esusId !='' and sqlCond.esusId !=null">
+       		AND  ESUS.ESUS_ID=#{sqlCond.esusId}
+   		</if>
+		<if test="sqlCond.ebpjEscoId !='' and sqlCond.ebpjEscoId !=null">
+       		AND  EBPJ.EBPJ_ESCO_ID=#{sqlCond.ebpjEscoId}
+   		</if>
+	ORDER BY EBPJ.EBPJ_PROJECT_NAME DESC
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

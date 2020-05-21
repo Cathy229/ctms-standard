@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sinotrans.oms.eoor.mapper">
+	<select id="EoorScheduleQuery" parameterType="map" resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+		SELECT distinct  ETSP.ETSP_ID,
+		                        ETSP.ETSP_STATUS,ETTA.Etta_Is_Within,etta.etta_carrier_ebcu_name_cn,etta.etta_status,
+                                ETSP.ETSP_NO,
+                                ETSP.ETSP_NAME,
+                                ETSP.ETSP_SUBSTR2,
+                                ETSP.ETSP_EBCU_NAME_CN,
+                                ETSP.ETSP_TRACTOR_ETVE_ID,
+                                ETSP.ETSP_TRACTOR_ETVE_CARD,
+                                ETSP.ETSP_TRAILER_ETVE_ID,
+                                ETSP.ETSP_TRAILER_ETVE_CARD,
+                                ETSP.ETSP_MAIN_ETTP_ID,
+                                ETSP.ETSP_MAIN_ETTP_NAME,
+                                ETSP.ETSP_COPILOR_ETTP_ID,
+                                ETSP.ETSP_COPILOR_ETTP_NAME,
+                                ETSP.ETSP_GUARDS_ETTP_ID,
+                                ETSP.ETSP_GUARDS_ETTP_NAME,
+                                ETSP.ETSP_DESC,
+                                ETOR.ETOR_ID,
+                                ETTA.ETTA_ID,
+                                ETOR.ETOR_EBPJ_NAME,
+                                ETOR.ETOR_SO_NO,
+                                ETOR.ETOR_DO_NO,
+                                TO_CHAR(ETOR.CREATE_TIME, 'yyyy-mm-dd') CREATE_TIME,
+                                TO_CHAR(ETOR.ETOR_REQ_DELIVERY_DATE, 'yyyy-mm-dd') ETOR_REQ_DELIVERY_DATE,
+                                TO_CHAR(ETOR.ETOR_REQ_ARRIVAL_DATE,'yyyy-mm-dd') ETOR_REQ_ARRIVAL_DATE,
+                                ETOR.ETOR_WEIGHT,
+                                ETOR.ETOR_START_EBRG_NAME_CN,
+                                ETOR.ETOR_END_EBRG_NAME_CN,
+                                ETOR.ETOR_CUSTOM_EBCU_ID,
+                                ETOR.ETOR_CUSTOM_EBCU_NAME_CN,
+                                ETOR.ETOR_LEVEL,
+                                ETOR.ETOR_SHIPPER_EBSA_ADDRESS,
+                                ETOR.ETOR_CONSIGNEE_EBSA_ADDRESS,
+                                ETOR.ETOR_SCHEDULE_NAME,
+                                ETOR.ETOR_REMARK,
+                                ETTA.ETTA_IS_INTELSCHEDULING,
+                                ETOM.ETOM_TYPE
+                  FROM   ET_TASK ETTA
+                  LEFT JOIN ET_ORDER ETOR ON ETTA.ETTA_ETOR_ID = ETOR.ETOR_ID
+                  LEFT JOIN ET_ORDER_MATERIEL ETOM
+                    ON ETOM.ETOM_ETOR_ID = ETOR.ETOR_ID AND ROWNUM = 1
+                  LEFT JOIN ET_SCHEDULE_PLAN ETSP
+                    ON ETTA.ETTA_ETSP_ID = ETSP.ETSP_ID
+                 WHERE 1=1 
+                 <if test="sqlCond.ettaIsWithin !='' and sqlCond.ettaIsWithin !=null">
+                 AND((#{sqlCond.ettaIsWithin} ='Y' AND ETTA.Etta_Is_Within=#{sqlCond.ettaIsWithin} and ETSP.ETSP_STATUS IN ('1', '3'))
+         or (#{sqlCond.ettaIsWithin} ='N' AND ETTA.Etta_Is_Within=#{sqlCond.ettaIsWithin} and ETTA.ETTA_CARRIER_EBCU_NAME_CN is not null))
+             </if>
+           <if test="sqlCond.escoId !='' and sqlCond.escoId !=null">
+          AND  etor.etor_esco_id=#{sqlCond.escoId}
+        </if>
+          <if test="sqlCond.eoorOperateEsstId !='' and sqlCond.eoorOperateEsstId !=null">
+          AND etor.etor_operate_esst_id=#{sqlCond.eoorOperateEsstId}
+        </if>
+        <if test="sqlCond.eoorEbpjId !='' and sqlCond.eoorEbpjId !=null">
+          AND etor.etor_ebpj_id=#{sqlCond.eoorEbpjId}
+        </if>
+         <if test="sqlCond.eoorOrderNo !='' and sqlCond.eoorOrderNo !=null">
+          AND ETOR_ORDER_NO =#{sqlCond.eoorOrderNo}
+        </if>
+        <if test="sqlCond.eoorSoNo !='' and sqlCond.eoorSoNo !=null">
+          AND ETTA.ETTA_SO_NO =#{sqlCond.eoorSoNo}
+        </if>
+          <if test="sqlCond.etorSubstr6 !='' and sqlCond.etorSubstr6 !=null">
+          AND ETOR.ETOR_SUBSTR6 =#{sqlCond.etorSubstr6}
+        </if>
+        <if test="sqlCond.eoorScheduleId !='' and sqlCond.eoorScheduleId !=null">
+          AND etor.etor_schedule_id=#{sqlCond.eoorScheduleId}
+        </if>
+        <if test="sqlCond.ettaArrivalReqTimeFrom !='' and sqlCond.ettaArrivalReqTimeFrom !=null">
+          AND to_char(etor.etor_req_arrival_date,'yyyy-MM-dd') &gt;= #{sqlCond.ettaArrivalReqTimeFrom}
+        </if>
+        <if test="sqlCond.ettaArrivalReqTimeTo !='' and sqlCond.ettaArrivalReqTimeTo !=null">
+          AND to_char(etor.etor_req_arrival_date,'yyyy-MM-dd') &lt;= #{sqlCond.ettaArrivalReqTimeTo}
+        </if>
+       <if test="sqlCond.createFrom !='' and sqlCond.createFrom !=null">
+          AND to_char(etta.create_time,'yyyy-MM-dd') &gt;= #{sqlCond.createFrom}
+        </if>
+        <if test="sqlCond.createTo !='' and sqlCond.createTo !=null">
+          AND to_char(etta.create_time,'yyyy-MM-dd') &lt;= #{sqlCond.createTo}
+        </if>
+       <if test="sqlCond.ettaDeliveryReqTimeFrom !='' and sqlCond.ettaDeliveryReqTimeFrom !=null">
+          AND to_char(etor.etor_req_delivery_date,'yyyy-MM-dd') &gt;= #{sqlCond.ettaDeliveryReqTimeFrom}
+        </if>
+         <if test="sqlCond.ettaDeliveryReqTimeTo !='' and sqlCond.ettaDeliveryReqTimeTo !=null">
+          AND to_char(etor.etor_req_delivery_date,'yyyy-MM-dd') &lt;= #{sqlCond.ettaDeliveryReqTimeTo}
+         </if>
+        <if test="sqlCond.ebrgId !='' and sqlCond.ebrgId !=null">
+          AND etor.etor_end_ebrg_id=#{sqlCond.ebrgId}
+        </if>
+        <if test="sqlCond.ettaIsIntelscheduling !='' and sqlCond.ettaIsIntelscheduling !=null">
+          AND etta.etta_is_intelscheduling=#{sqlCond.ettaIsIntelscheduling}
+        </if>
+   order by create_time desc
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.businessrequest.mapper"> 
+    <select id="EoRequestTrailerListQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+
+SELECT EOOR.EOOR_ORDER_NO,--订单编号
+       EOOR.EOOR_ID,--订单ID
+       EOOR.EOOR_SINO_NO,--外运号
+       EOET.EOET_SO_NO,--SO NO
+       EOET.EOET_DO_NO,--DO NO
+       EOET.EOET_ESCO_ID,--公司ID
+       EOET.EOET_NO,--请求编号
+       EOET.EOET_ID,--请求主键
+       EOOT.EOOT_STANDARD,--箱型
+       EOOT.EOOT_SIZE,--尺寸
+       EOET.EOET_CONTAINER_TYPE_WEIGHT,--箱量
+       EOET.EOET_STATUS,--提货状态
+       EOET.EOET_BL_NO, --提单号 
+       EOET.REC_VER, --版本号
+       EOET.eoet_Consignor_Ebcu_Name,--委托方
+       EOET.EOET_CONSIGNOR_EBCU_CODE,
+       EOET.EOET_CONSIGNOR_EBCU_id,
+       EOET.EOET_EOOR_ID, --订单id 
+       EOET.EOET_COLLECT_PORT_NAME, --集港地点
+       EOET.EOET_SUBSTR1, --BU信息 
+       EOET.eoet_trailer_company_name, --拖车公司
+       EOET.eoet_vessel, --船名
+       EOET.eoet_voyage, --航次
+       EOET.eoet_boxseal_back_time, --箱封反馈时间
+       EOET.eoet_delivery_place_name, --提货地点
+       EOET.eoet_req_delivery_date, --要求提货时间
+       EOET.eoet_delivery_place_address, --提货地址
+       EOET.eoet_Req_Arrival_Date, --预计送达时间
+       TO_CHAR(EOET.EOET_CUT_BOX_TIME,'yyyy-mm-dd') EOET_CUT_BOX_TIME,--截箱时间
+       TO_CHAR(EOET.EOET_CONTAINER_TIME,'yyyy-mm-dd') EOET_CONTAINER_TIME,--提箱时间
+       TO_CHAR(EOET.EOET_DELIVERY_TIME,'yyyy-mm-dd') EOET_DELIVERY_TIME,--提货完成时间
+       TO_CHAR(EOET.EOET_SET_POST_TIME,'yyyy-mm-dd') EOET_SET_POST_TIME,--集港时间
+       EOET.EOET_END_EBPT_NAME_CN,--目的港
+       TO_CHAR(EOOT.EOOT_SET_POST_TIME,'yyyy-mm-dd') EOOT_SET_POST_TIME,--集装箱集港时间
+       TO_CHAR(EOET.EOET_CONTAINER_TIME_ASK,'yyyy-mm-dd') EOET_CONTAINER_TIME_ASK,--要求提箱时间
+       EOET.EOET_EBPJ_ID,
+       EOET.EOET_LO_EBPP_ID
+  FROM EO_REQUEST_TRAILER EOET
+  LEFT JOIN EO_ORDER EOOR
+    ON EOET.EOET_EOOR_ID = EOOR.EOOR_ID
+  LEFT JOIN EO_EOOC_2_EOET EOOT
+    ON EOOT.EOOT_EOET_ID = EOET.EOET_ID
+  LEFT JOIN DP_IN_TRACK DPIT 
+    ON DPIT.DPIT_BRID_ID = EOET.EOET_ID
+  LEFT JOIN EO_ORDER_EXPAND_AGENCY EOEA
+  	ON EOEA.EOEA_EOOR_ID = EOOR.EOOR_ID
+ WHERE 1=1 
+   and eoor.eoor_source = '11'
+   <if test="sqlCond.eoetEscoId !='' and sqlCond.eoetEscoId !=null">
+       AND  EOET.EOET_ESCO_ID=#{sqlCond.eoetEscoId}
+   </if>
+ 	<if test="sqlCond.eoorOrderNo !='' and sqlCond.eoorOrderNo !=null">
+       AND  EOOR.EOOR_ORDER_NO=#{sqlCond.eoorOrderNo}
+   </if>
+   <if test="sqlCond.eoorEbpjId !='' and sqlCond.eoorEbpjId !=null">
+       AND  EOOR.EOOR_EBPJ_ID=#{sqlCond.eoorEbpjId}
+   </if>
+   <if test="sqlCond.eoorEscoId !='' and sqlCond.eoorEscoId !=null">
+       AND  EOOR.EOOR_ESCO_ID=#{sqlCond.eoorEscoId}
+   </if>
+   <if test="sqlCond.eoorSinoNo !='' and sqlCond.eoorSinoNo !=null">
+       AND  EOOR.EOOR_SINO_NO=#{sqlCond.eoorSinoNo}
+   </if>
+   <if test="sqlCond.eoetNo !='' and sqlCond.eoetNo !=null">
+       AND  EOET.EOET_NO=#{sqlCond.eoetNo}
+   </if>
+   <if test="sqlCond.eoetSoNo !='' and sqlCond.eoetSoNo !=null">
+       AND  EOET.EOET_SO_NO=#{sqlCond.eoetSoNo}
+   </if>
+   <if test="sqlCond.eoetDoNo !='' and sqlCond.eoetDoNo !=null">
+       AND  EOET.EOET_DO_NO=#{sqlCond.eoetDoNo}
+   </if>
+   <if test="sqlCond.eoetConsignorEbcuCode !='' and sqlCond.eoetConsignorEbcuCode!=null">
+       AND  EOET.EOET_CONSIGNOR_EBCU_CODE=#{sqlCond.eoetConsignorEbcuCode}
+   </if>
+   <if test="sqlCond.eoetOwnerEbcuCustomerNo !='' and sqlCond.eoetOwnerEbcuCustomerNo !=null">
+       AND  EOET.EOET_OWNER_EBCU_CODE=#{sqlCond.eoetOwnerEbcuCustomerNo}
+   </if>
+   <if test="sqlCond.beginEoetReqDeliveryDate !=null and sqlCond.endEoetReqDeliveryDate !=null">
+       <!-- AND  (EOET.EOET_REQ_DELIVERY_DATE &gt; #{sqlCond.beginEoetReqDeliveryDate} AND EOET.EOET_REQ_DELIVERY_DATE &lt; #{sqlCond.endEoetReqDeliveryDate}) -->
+	   AND EOET.EOET_REQ_DELIVERY_DATE Between to_char(to_date(#{sqlCond.beginEoetReqDeliveryDate},'yyyy-mm-dd')) AND to_char(to_date(#{sqlCond.endEoetReqDeliveryDate},'yyyy-mm-dd'))
+   </if>
+   <if test="sqlCond.beginEoetCutBoxTime !=null and sqlCond.endEoetCutBoxTime!=null">
+		<!--AND  (EOET.EOET_CUT_BOX_TIME > #{sqlCond.beginEoetCutBoxTime} AND EOET.EOET_CUT_BOX_TIME > #{sqlCond.endEoetCutBoxTime}) --> 
+  	   AND EOET.EOET_CUT_BOX_TIME Between to_char(to_date(#{sqlCond.beginEoetCutBoxTime},'yyyy-mm-dd')) AND to_char(to_date(#{sqlCond.endEoetCutBoxTime},'yyyy-mm-dd'))
+   </if>
+   <if test="sqlCond.beginEoetSetPostTime !=null and sqlCond.endEoetSetPostTime !=null">
+       <!-- AND  (EOET.EOET_SET_POST_TIME > #{sqlCond.beginEoetSetPostTime} AND EOET.EOET_SET_POST_TIME > #{sqlCond.endEoetSetPostTime}) -->
+  	   AND EOET.EOET_SET_POST_TIME Between to_char(to_date(#{sqlCond.beginEoetSetPostTime},'yyyy-mm-dd')) AND to_char(to_date(#{sqlCond.endEoetSetPostTime},'yyyy-mm-dd'))
+   </if>
+   <if test="sqlCond.eoetDeliveryPlaceAddress !='' and sqlCond.eoetDeliveryPlaceAddress !=null">
+       AND  EOOT.EOOT_DELIVERY_PLACE_ADDRESS like '%'||#{sqlCond.eoetDeliveryPlaceAddress}||'%'
+   </if>
+   <if test="sqlCond.eoetStatus !='' and sqlCond.eoetStatus  !=null">
+       AND  EOET.EOET_STATUS=#{sqlCond.eoetStatus}
+   </if>
+   <if test="sqlCond.eoetBlNo !='' and sqlCond.eoetBlNo  !=null">
+       AND  EOET.EOET_BL_NO=#{sqlCond.eoetBlNo}
+   </if>
+   <if test="sqlCond.dpitType !='' and sqlCond.dpitType !=null">
+       AND DPIT.DPIT_TYPE=#{sqlCond.dpitType}
+   </if>
+   <if test="sqlCond.trailerDpitOperatorTimeForm !=null and sqlCond.trailerDpitOperatorTimeTo !=null">
+       AND to_char(DPIT.DPIT_OPERATOR_TIME,'yyyy-MM-dd') &gt;= #{sqlCond.trailerDpitOperatorTimeForm} 
+       AND to_char(DPIT.DPIT_OPERATOR_TIME,'yyyy-MM-dd') &lt;= #{sqlCond.trailerDpitOperatorTimeTo}
+   </if>
+   <if test="sqlCond.eoSinoNoOrderNoEoetBlNo !='' and sqlCond.eoSinoNoOrderNoEoetBlNo !=null">
+       AND  (EOET.EOET_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEoetBlNo}),'%')
+       OR  EOOR.EOOR_ORDER_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEoetBlNo}),'%')
+       OR  EOET.EOET_BL_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEoetBlNo}),'%')
+       OR  EOET.EOET_SO_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEoetBlNo}),'%')
+       OR  EOET.EOET_DO_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEoetBlNo}),'%')
+       )
+   </if>
+   <if test="sqlCond.eoeaAgencyType !=null and sqlCond.eoeaAgencyType !=null">
+       AND EOEA.EOEA_AGENCY_TYPE  = #{sqlCond.eoeaAgencyType} 
+   </if>
+    
+   order by EOET.create_time desc
+   <include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

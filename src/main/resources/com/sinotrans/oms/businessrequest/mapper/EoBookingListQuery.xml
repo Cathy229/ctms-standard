@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.businessrequest.mapper"> 
+    <select id="EoBookingListQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+
+SELECT EOOR.EOOR_ID,--订单id
+       EOOR.EOOR_SINO_NO,--外运号
+       EOOR.EOOR_ORDER_NO,--系统订单号
+       EORB.EORB_RESERVATIONS_NO,--订舱集拼号
+       EORB.EORB_SO_NO,--SONO
+       EORB.EORB_DO_NO,--DONO
+       EOOR.EOOR_CONSIGNOR_EBCU_NAME,--委托方
+       TO_CHAR(EOEA.EOEA_ETD,'yyyy-mm-dd') EOEA_ETD,--预计开航时间
+       EORB.EORB_ID,--订舱主键
+       EORB.EORB_BL_RECEIPT_PLACE_NAME,--提单收货地
+       EORB.EORB_BL_DELIVERY_PLACE,--提单交货地
+       EORB.EORB_FINAL_DESTINATION,--目的港
+       EORB.EORB_BULK_BILL_NO,--提单号
+       EORB.EORB_VESSEL_NAME,--船名
+       EORB.EORB_VOYAGE,--航次
+       EORB.EORB_CARRIER_NAME,--船公司
+       EOEA.EOEA_VESSEL_NAME,--船名
+       EOEA.EOEA_VOYAGE,--航次
+       EOEA.EOEA_CARRIER_NAME,--船公司
+       EORB.EORB_STATUS,--状态
+       EORB.EORB_NO,--委托编号
+       EORB.EORB_SUBSTR25,--订舱拒绝原因
+       EORB.REC_VER--版本号
+  FROM EO_REQUEST_BOOKING EORB
+  LEFT JOIN EO_ORDER EOOR
+    ON EOOR.EOOR_ID = EORB.EORB_EOOR_ID
+  LEFT JOIN EO_ORDER_EXPAND_AGENCY EOEA
+    ON EOEA.EOEA_EOOR_ID = EORB.EORB_EOOR_ID
+  LEFT JOIN DP_IN_TRACK DPIT 
+    ON DPIT.DPIT_BRID_ID = EORB.EORB_ID
+ WHERE
+   1=1
+   and eoor.eoor_source = '11'
+ 	<if test="sqlCond.eoorEscoId !='' and sqlCond.eoorEscoId !=null">
+       AND  EORB.EORB_ESCO_ID=#{sqlCond.eoorEscoId}<!-- 公司 -->
+   </if>
+   <if test="sqlCond.eoorSinoNo !='' and sqlCond.eoorSinoNo !=null">
+       AND  EOOR.EOOR_SINO_NO=#{sqlCond.eoorSinoNo}<!-- 外运号 -->
+   </if>
+   <if test="sqlCond.eoorOrderNo !='' and sqlCond.eoorOrderNo !=null">
+       AND  EOOR.EOOR_ORDER_NO=#{sqlCond.eoorOrderNo}<!-- 系统订单号 -->
+   </if>
+   <if test="sqlCond.eoorEbpjId !='' and sqlCond.eoorEbpjId !=null">
+       AND  EOOR.EOOR_EBPJ_ID=#{sqlCond.eoorEbpjId}<!-- 订单表项目id -->
+   </if>
+   <if test="sqlCond.eoorEscoId !='' and sqlCond.eoorEscoId !=null">
+       AND  EOOR.EOOR_ESCO_ID=#{sqlCond.eoorEscoId}
+   </if>
+    <if test="sqlCond.eorbConsignorEbcuCode !='' and sqlCond.eorbConsignorEbcuCode !=null">
+       AND  EORB.EORB_CONSIGNOR_EBCU_CODE=#{sqlCond.eorbConsignorEbcuCode}<!-- 委托人 -->
+   </if>
+   <if test="sqlCond.eoorOwnerEbcuCustomerNo !='' and sqlCond.eoorOwnerEbcuCustomerNo !=null">
+       AND  EOOR.EOOR_CUSTOM_EBCU_CODE=#{sqlCond.eoorCustomEbcuCustomerNo}<!-- 货主 -->
+   </if>
+   <if test="sqlCond.eorbBlReceiptPlaceName !='' and sqlCond.eorbBlReceiptPlaceName !=null">
+       AND  EORB.EORB_BL_RECEIPT_PLACE_NAME=#{sqlCond.eorbBlReceiptPlaceName}<!-- 提单收货地 -->
+   </if>
+   <if test="sqlCond.eorbDeliveryPlaceName !='' and sqlCond.eorbDeliveryPlaceName !=null">
+       AND  EORB.EORB_DELIVERY_PLACE_NAME=#{sqlCond.eorbDeliveryPlaceName}<!-- 提单交货地 -->
+   </if>
+   <if test="sqlCond.eorbFinalDestination !='' and sqlCond.eorbFinalDestination !=null">
+       AND  EORB.EORB_FINAL_DESTINATION_CODE=#{sqlCond.eorbFinalDestinationCode}<!-- 目的港 -->
+   </if>
+   <if test="sqlCond.eorbBulkBillNo !='' and sqlCond.eorbBulkBillNo !=null">
+       AND  EORB.EORB_BULK_BILL_NO=#{sqlCond.eorbBulkBillNo}<!-- 提单号 -->
+   </if>
+   <if test="sqlCond.eorbVesselName !='' and sqlCond.eorbVesselName !=null">
+       AND  EORB.EORB_VESSEL_NAME=#{sqlCond.eorbVesselName}<!-- 船名 -->
+   </if>
+   <if test="sqlCond.eorbVoyage !='' and sqlCond.eorbVoyage !=null">
+       AND  EORB.EORB_VOYAGE=#{sqlCond.eorbVoyage}<!-- 航次 -->
+   </if>
+   <if test="sqlCond.eorbCarrierCode !='' and sqlCond.eorbCarrierCode !=null">
+       AND  EORB.EORB_CARRIER_CODE=#{sqlCond.eorbCarrierCode}<!-- 船公司 -->
+   </if>
+   <if test="sqlCond.eorbSoNo !='' and sqlCond.eorbSoNo !=null">
+       AND  EORB.EORB_SO_NO=#{sqlCond.eorbSoNo}<!-- S/O NO -->
+   </if>
+   <if test="sqlCond.eorbDoNo !='' and sqlCond.eorbDoNo !=null">
+       AND  EORB.EORB_DO_NO=#{sqlCond.eorbDoNo}<!-- S/O NO -->
+   </if>
+   <if test="sqlCond.eoeaEodpNo !='' and sqlCond.eoeaEodpNo !=null">
+       AND  EOEA.EOEA_AGENT_CODE=#{sqlCond.eoeaEodpNo}<!-- 目的港代理 -->
+   </if>
+   <if test="sqlCond.eoeaEtd !='' and sqlCond.eoeaEtd !=null">
+	   AND  EOEA.EOEA_ETD=to_char(to_date(#{sqlCond.eoeaEtd},'yyyy-mm-dd'))
+   </if>
+   <if test="sqlCond.eorbStatus !='' and sqlCond.eorbStatus !=null">
+       AND  EORB.EORB_STATUS=#{sqlCond.eorbStatus}<!-- 状态 -->
+   </if>
+   <if test="sqlCond.dpitType !='' and sqlCond.dpitType !=null">
+       AND DPIT.DPIT_TYPE=#{sqlCond.dpitType}
+   </if>
+   <if test="sqlCond.dpitOperatorTimeForm !=null and sqlCond.dpitOperatorTimeTo !=null">
+       AND to_char(DPIT.DPIT_OPERATOR_TIME,'yyyy-MM-dd') &gt;= #{sqlCond.dpitOperatorTimeForm} 
+       AND to_char(DPIT.DPIT_OPERATOR_TIME,'yyyy-MM-dd') &lt;= #{sqlCond.dpitOperatorTimeTo}
+   </if>
+   <if test="sqlCond.eoSinoNoOrderNoEorbBulkBillNO !='' and sqlCond.eoSinoNoOrderNoEorbBulkBillNO !=null">
+       AND  (EOOR.EOOR_SINO_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEorbBulkBillNO}),'%')
+       OR  EOOR.EOOR_ORDER_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEorbBulkBillNO}),'%')
+       OR  EORB.EORB_BULK_BILL_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEorbBulkBillNO}),'%')
+       OR  EORB.EORB_SO_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEorbBulkBillNO}),'%')
+       OR  EORB.EORB_DO_NO like CONCAT(CONCAT('%',#{sqlCond.eoSinoNoOrderNoEorbBulkBillNO}),'%')
+       )
+   </if>
+   ORDER BY EORB.Create_Time DESC
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

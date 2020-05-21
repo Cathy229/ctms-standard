@@ -1,0 +1,66 @@
+.prompt{
+display:block;
+color:red;
+border:1px solid #CADDEE;
+background-color:#E2FDFE;
+position:absolute;
+z-index:9999;
+margin-top:-44px !important;
+margin-top:-1px;
+float:left;
+padding:2px;
+}
+.unprompt{
+display:none;
+}
+.prompt {
+	background: none;
+	border: 0;
+	margin: 0 !important;
+	padding: 0;
+}
+
+.prompt-icon {
+	cursor: pointer;
+	background-position: 0 -144px;
+	text-indent: 0;
+	display: block;
+	height: 16px;
+	width: 16px;
+	float: left;
+}
+
+.no-prompt em {
+	display: none;
+}
+
+.prompt em {
+	display: block;
+	width: 100px;
+	position: relative;
+	z-index: 99999;
+	font-family: "";
+	font-style: normal;
+	font-size: 12px;
+	color: #A2575C;
+	border: 1px solid #FF9900;
+	background-color: #FFFEE6;
+	margin: 0 0 0 0px;
+	padding: 2px 3px;
+	line-height: 16px;
+}
+
+.prompt  .pointer{
+	width: 6px;
+	height: 11px;
+	margin: 0;
+	position:relative;
+}
+.backimage{
+	width: 11px;
+	height: 6px;
+	background: url(../suggestBox/images/prompt-pointer.gif) no-repeat ;
+}
+.validatebox-invalid {
+	background: url("../suggestBox/images/validatebox_warning.png") no-repeat scroll right 1px #FFFFEE;
+}

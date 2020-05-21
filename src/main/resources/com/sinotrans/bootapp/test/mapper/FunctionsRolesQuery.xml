@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.sinotrans.bootapp.test.mapper"> 
+	<select id="FunctionsRolesQuery" parameterType="map" resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+		  select rf.bsrf_bsro_id
+		    from bsrf_role_functions rf,bsfn_functions f
+		   where rf.bsrf_bsfn_id = f.bsfn_id
+  			 and f.bsfn_url = #{sqlCond.bsfnUrl}
+		  and <include refid="util.COMMON_DYN_SQL" />
+		  and <include refid="util.DATA_AUTH" />
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

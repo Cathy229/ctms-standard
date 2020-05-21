@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.bootapp.test.mapper"> 
+	<select id="TestTablesQuery" parameterType="map" resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+		select a.id,b.work_level,c.typename from FJ_WORKLOG a,FJ_WORKLEVEL b, FJ_WORKTYPE c 
+		where 1=1 and a.work_level = b.id  and a.worktype_id = c.id 
+		<if test="sqlCond.workLevel!=null">
+		  and a.work_level = #{sqlCond.workLevel}
+		</if>
+		  and <include refid="util.COMMON_DYN_SQL" />	
+		  and <include refid="util.DATA_AUTH" />
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

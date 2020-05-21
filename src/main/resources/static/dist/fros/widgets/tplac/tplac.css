@@ -1,0 +1,6 @@
+.tplac_Container {
+	position: absolute;
+	background-color: white;
+	width: 360px;
+	z-index : 5000;
+}

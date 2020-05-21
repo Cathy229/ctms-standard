@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.customerproject.mapper"> 
+    <select id="ProjectParamsQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+			 SELECT EBPJCP.EBPC_ID,
+		        EBPJCP.EBPC_EBPJ_ID,
+		        EBPJCP.EBPC_ESCP_ID,
+		        EBPJCP.REC_VER,
+		        ESCP.ESCP_ID,
+		        ESCP.ESCP_CODE,
+		        ESCP.ESCP_NAME,
+		        ESCP.ESCP_VALUE,
+		        ESCP.ESCP_PARENT_ID,
+		        ESCP.ESCP_DESC
+		   FROM EB_EBPJ_2_ESCP EBPJCP
+		   LEFT JOIN ES_CONTROL_PARAM ESCP ON EBPJCP.EBPC_ESCP_ID = ESCP.ESCP_ID
+		WHERE 1=1
+		<if test="sqlCond.projectId !='' and sqlCond.projectId !=null">
+       		AND  EBPJCP.EBPC_EBPJ_ID=#{sqlCond.projectId}
+   		</if>
+		<if test="sqlCond.escpCode !='' and sqlCond.escpCode !=null">
+       		AND  ESCP.ESCP_CODE=#{sqlCond.escpCode}
+   		</if>
+   		<if test="sqlCond.escpName !='' and sqlCond.escpName !=null">
+       		AND  ESCP.ESCP_NAME=#{sqlCond.escpName}
+   		</if>
+		<if test="sqlCond.escpId !='' and sqlCond.escpId !=null">
+       		AND  ESCP.ESCP_ID=#{sqlCond.escpId}
+   		</if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

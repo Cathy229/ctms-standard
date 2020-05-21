@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.contract.mapper">
+	<select id="ElProtocolListQuery" parameterType="map"
+		resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+
+		SELECT ELPL.ELPL_ID,
+		       ELPL.ELPL_NO,
+		       ELPL.ELPL_NAME,
+		       ELPL.ELPL_STATUS,
+		       ELPL.ELPL_MODEL,
+		       ELPL.ELPL_TYPE,
+		       ELPL.ELPL_CUSTOMER_EBCU_NAME,
+		       TO_CHAR(ELPL.ELPL_EFFECTIVE_DATE_FROM,'yyyy-mm-dd') ELPL_EFFECTIVE_DATE_FROM,
+		       TO_CHAR(ELPL.ELPL_EFFECTIVE_DATE_TO,'yyyy-mm-dd') ELPL_EFFECTIVE_DATE_TO
+		  FROM EL_PROTOCOL ELPL
+		  WHERE 1 = 1
+		<if test="sqlCond.eoorEscoId !='' and sqlCond.eoorEscoId !=null">
+			AND ELPL.ELPL_ESCO_ID=#{sqlCond.eoorEscoId}
+		</if>
+		<if test="sqlCond.eoorEbpjId !='' and sqlCond.eoorEbpjId !=null">
+			AND ELPL.ELPL_EBPJ_ID=#{sqlCond.eoorEbpjId}
+		</if>
+		<if test="sqlCond.elplNo !='' and sqlCond.elplNo !=null">
+			AND ELPL.ELPL_NO=#{sqlCond.elplNo}
+		</if>
+		<if test="sqlCond.elplName !='' and sqlCond.elplName !=null">
+			AND ELPL.ELPL_NAME=#{sqlCond.elplName}
+		</if>
+		<if test="sqlCond.elplType !='' and sqlCond.elplType !=null">
+			AND ELPL.ELPL_TYPE=#{sqlCond.elplType}
+		</if>
+		<if test="sqlCond.elplModel !='' and sqlCond.elplModel !=null">
+			AND ELPL.ELPL_MODEL=#{sqlCond.elplModel}
+		</if>
+		<if test="sqlCond.elplCustomerEbcuCode !='' and sqlCond.elplCustomerEbcuCode !=null">
+			AND ELPL.ELPL_CUSTOMER_EBCU_CODE=#{sqlCond.elplCustomerEbcuCode}
+		</if>
+		<if test="sqlCond.elplEffectiveDateFrom !='' and sqlCond.elplEffectiveDateFrom !=null">
+			AND to_char(ELPL.ELPL_EFFECTIVE_DATE_FROM ,'yyyy-mm-dd') &gt;= #{sqlCond.elplEffectiveDateFrom}
+		</if>
+		<if test="sqlCond.elplEffectiveDateTo !='' and sqlCond.elplEffectiveDateTo !=null">
+			AND to_char(ELPL.ELPL_EFFECTIVE_DATE_TO,'yyyy-mm-dd') &lt;= #{sqlCond.elplEffectiveDateTo}
+		</if>
+		<if test="sqlCond.elplStatus !='' and sqlCond.elplStatus !=null">
+			AND ELPL.ELPL_STATUS=#{sqlCond.elplStatus}
+		</if>
+		<if test="sqlCond.allElplNo !='' and sqlCond.allElplNo !=null">
+			 AND ELPL.ELPL_NO like CONCAT(CONCAT('%',#{sqlCond.allElplNo}),'%')
+		</if>
+		ORDER BY ELPL.CREATE_TIME DESC
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

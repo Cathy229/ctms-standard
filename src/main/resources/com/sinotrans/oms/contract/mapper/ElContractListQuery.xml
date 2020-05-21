@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.contract.mapper">
+	<select id="ElContractListQuery" parameterType="map"
+		resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+
+		SELECT 
+			ELCT.ELCT_ID,--合同主键
+		    ELCT.ELCT_CONTRACT_NUMBER,--合同流水号
+		    ELCT.ELCT_CONTRACT_NO,--合同号
+		    ELCT.ELCT_CONTRACT_UNIT,--合同签署单位
+		    TO_CHAR(ELCT.ELCT_CONTRACT_DATE,'yyyy-mm-dd') ELCT_CONTRACT_DATE,--合同签署日期
+		    ELCT.ELCT_OPERATOR_EBCU_NAME,--经办人
+		    ELCT.ELCT_CONTRACT_NAME,--合同名称
+		    TO_CHAR(ELCT.ELCT_TERM_DATE_FROM,'yyyy-mm-dd') || '至'|| TO_CHAR(ELCT.ELCT_TERM_DATE_TO,'yyyy-mm-dd') as  ELCT_TERM_DATE,--合同有效期
+		    TO_CHAR(ELCT.ELCT_TERM_DATE_FROM,'yyyy-mm-dd') ELCT_TERM_DATE_FROM,
+		    TO_CHAR(ELCT.ELCT_TERM_DATE_TO,'yyyy-mm-dd') ELCT_TERM_DATE_TO,
+		    ELCT.ELCT_EBPJ_NAME,--项目名称
+		    ELCT.ELCT_CUSTOM_EBCU_NAME--客户名称
+		FROM EL_CONTRACT ELCT
+		WHERE
+			1=1
+		<if test="sqlCond.eoorEscoId !='' and sqlCond.eoorEscoId !=null">
+			AND ELCT.ELCT_ESCO_ID=#{sqlCond.eoorEscoId}
+		</if>
+		<if test="sqlCond.eoorEbpjId !='' and sqlCond.eoorEbpjId !=null">
+			AND ELCT.ELCT_EBPJ_ID=#{sqlCond.eoorEbpjId}
+		</if>
+		<if test="sqlCond.elctContractNumber !='' and sqlCond.elctContractNumber !=null">
+			AND ELCT.ELCT_CONTRACT_NUMBER=#{sqlCond.elctContractNumber}
+		</if>
+		<if test="sqlCond.elctContractNo !='' and sqlCond.elctContractNo !=null">
+			AND ELCT.ELCT_CONTRACT_NO=#{sqlCond.elctContractNo}
+		</if>
+		<if test="sqlCond.elctContractName !='' and sqlCond.elctContractName !=null">
+			AND ELCT.ELCT_CONTRACT_NAME=#{sqlCond.elctContractName}
+		</if>
+		<if test="sqlCond.elctCustomEbcuCode !='' and sqlCond.elctCustomEbcuCode !=null">
+			AND ELCT.ELCT_CUSTOM_EBCU_CODE=#{sqlCond.elctCustomEbcuCode}
+		</if>
+		<if test="sqlCond.elctContractUnit !='' and sqlCond.elctContractUnit !=null">
+			AND ELCT.ELCT_CONTRACT_UNIT=#{sqlCond.elctContractUnit}
+		</if>
+		<if test="sqlCond.elctTermDateFrom !='' and sqlCond.elctTermDateFrom !=null">
+			AND to_char(ELCT.ELCT_TERM_DATE_FROM ,'yyyy-mm-dd') &gt;= #{sqlCond.elctTermDateFrom}
+		</if>
+		<if test="sqlCond.elctTermDateTo !='' and sqlCond.elctTermDateTo !=null">
+			AND to_char(ELCT.ELCT_TERM_DATE_TO ,'yyyy-mm-dd') &lt;= #{sqlCond.elctTermDateTo}
+		</if>
+		<if test="sqlCond.allElctContractNumber !='' and sqlCond.allElctContractNumber !=null">
+			AND ELCT.ELCT_CONTRACT_NUMBER like CONCAT(CONCAT('%',#{sqlCond.allElctContractNumber}),'%')
+		</if>
+			ORDER BY ELCT.CREATE_TIME DESC
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.eoorder.mapper"> 
+    <select id="EoOrderMaterielAndEomjListQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT 
+			  EOEJ.EOEJ_ID,--关系主键
+			  EOOM.EOOM_MATERIAL_NO,--订单物料代码
+			  EOOM.EOOM_EBMA_NAME_CN,--订单物料名称
+			  EOEJ.EOEJ_QUANTITY,--装箱件数
+			  EOEJ.EOEJ_GROSS_WEIGHT,--装箱重量
+			  EOEJ.EOEJ_MEASUREMENT,--装箱体积
+			  EOOM.EOOM_EBTP_MODEL,--订单物料规格
+			  EOOM.EOOM_EBTP_PACKAGE,--包装
+			  EOOM.EOOM_EBTP_PACKAGE_TYPE,--包装类型
+			  EOOM.EOOM_TYPE,--物料特性
+			  EOOM.EOOM_EBMA_DG_CLASS--危险品等级
+			  FROM  EO_EOOB_2_EOMJ EOEJ
+			  LEFT JOIN EO_OUTMPORT_JOAB_BOX EOOB
+			      ON EOOB.EOOB_ID = EOEJ.EOEJ_EOOB_ID
+			  LEFT JOIN EO_ORDER_CONTAINER EOOC
+			    ON EOOB.EOOB_EOOC_ID = EOOC.EOOC_ID 
+			  LEFT JOIN EO_OUTMPORT_JOAB_MATERIEL EOMJ
+			    ON EOMJ.EOMJ_ID = EOEJ.EOEJ_EOMJ_ID
+			  LEFT JOIN Eo_Order_Materiel EOOM
+			    ON EOOM.EOOM_ID = EOMJ.EOMJ_EOOM_ID
+		  WHERE 1=1
+			  <if test="sqlCond.eoocId !='' and sqlCond.eoocId !=null">
+			      AND EOOC.EOOC_ID = #{sqlCond.eoocId}
+			  </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+    <select id="EoImportOrderMaterielAndEoeiListQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT 
+        EOEI.EOEI_ID,--关系主键
+        EOOM.EOOM_MATERIAL_NO,--订单物料代码
+        EOOM.EOOM_EBMA_NAME_CN,--订单物料名称
+        EOEI.EOEI_QUANTITY,--装箱件数
+        EOEI.EOEI_GROSS_WEIGHT,--装箱重量
+        EOEI.EOEI_MEASUREMENT,--装箱体积
+        EOOM.EOOM_EBTP_MODEL,--订单物料规格
+        EOOM.EOOM_EBTP_PACKAGE,--包装
+        EOOM.EOOM_EBTP_PACKAGE_TYPE,--包装类型
+        EOOM.EOOM_TYPE,--物料特性
+        EOOM.EOOM_EBMA_DG_CLASS--危险品等级
+        FROM  EO_EOIB_2_EOIM EOEI
+        LEFT JOIN EO_IMPORT_JOAB_BOX EOIB
+             ON EOEI.EOEI_EOIB_ID = EOIB.EOIB_ID
+        LEFT JOIN EO_ORDER_CONTAINER EOOC
+          ON EOIB.EOIB_EOOC_ID = EOOC.EOOC_ID 
+        LEFT JOIN EO_IMPORT_JOAB_MATERIEL EOIM
+          ON EOEI.EOEI_EOIM_ID = EOIM.EOIM_ID
+        LEFT JOIN Eo_Order_Materiel EOOM
+          ON EOOM.EOOM_ID = EOIM.EOIM_EOOM_ID
+           WHERE 1=1
+			  <if test="sqlCond.eoocId !='' and sqlCond.eoocId !=null">
+			      AND EOOC.EOOC_ID = #{sqlCond.eoocId}
+			  </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

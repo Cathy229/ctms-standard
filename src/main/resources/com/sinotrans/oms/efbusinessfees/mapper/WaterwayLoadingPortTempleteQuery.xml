@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.efbusinessfees.mapper"> 
+    <select id="WaterwayLoadingPortTempleteQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT COUNT(EBPR.EBPT_EBRG_ID) COUNT
+		  FROM EO_ORDER_EXPAND_AGENCY EOEG
+		  LEFT JOIN EB_PORT EBPR
+		    ON EOEG.EOEA_LOAD_PORT_ID = EBPR.EBPT_ID
+		   AND EBPR.EBPT_EBRG_ID IN
+		       (SELECT EB.EBPL_ID
+		          FROM EB_PLACE EB
+		         WHERE EB.EBPL_TYPE = 'PLACE_COUNTRY'
+		           AND EB.EBPL_CODE = 'CN')
+		 WHERE 1 = 1
+		 <if test="sqlCond.eoeaBulkBillNo !='' and sqlCond.eoeaBulkBillNo !=null">
+       		AND  EOEG.EOEA_BULK_BILL_NO=#{sqlCond.eoeaBulkBillNo}
+   		</if>
+   		<if test="sqlCond.eoeaEoorId !='' and sqlCond.eoeaEoorId !=null">
+       		AND  EOEG.EOEA_EOOR_ID=#{sqlCond.eoeaEoorId}
+   		</if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

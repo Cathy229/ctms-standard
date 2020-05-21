@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.fees.mapper"> 
+    <select id="feesListQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+
+SELECT distinct FEES_NUM.EOOR_ID,
+       FEES_NUM.EOOR_ESCO_ID,
+       FEES_NUM.EOOR_ORDER_NO,
+       FEES_NUM.EOOR_SO_NO,
+       FEES_NUM.EOOR_DO_NO,
+       FEES_NUM.EOOR_CUSTOM_EBCU_ID,
+       FEES_NUM.EOOR_CUSTOM_EBCU_NAME,
+       FEES_NUM.EOOR_EBPJ_ID,
+       FEES_NUM.EOOR_EBPJ_NAME,
+       FEES_NUM.CREATOR,
+       FEES_NUM.ESUS_USER_NAME_CN,
+       FEES_NUM.EOOR_ORDER_FUDEJI,
+       DECODE(FEES_NUM.EOOR_IS_SETTLEMENT_UPLOAD,'Y','是','否') AS EOOR_IS_SETTLEMENT_UPLOAD,
+       SUM(FEES_NUM.EFBF_TAX_AMOUNT_CR) AS EFBF_TAX_AMOUNT_CR,--已确认应收
+       SUM(FEES_NUM.EFBF_TAX_AMOUNT_CP) AS EFBF_TAX_AMOUNT_CP,--已确认应付
+       SUM(FEES_NUM.EFBF_TAX_AMOUNT_CR) - SUM(FEES_NUM.EFBF_TAX_AMOUNT_CP) AS EFBF_TAX_AMOUNTS,--已确认利润
+       SUM(FEES_NUM.EFBF_TAX_AMOUNT_NR) AS EFBF_TAX_AMOUNT_NR,--未确认应收
+       SUM(FEES_NUM.EFBF_TAX_AMOUNT_NP) AS EFBF_TAX_AMOUNT_NP,--未确认应付
+       SUM(FEES_NUM.EFBF_TAX_AMOUNT_CRP) AS EFBF_TAX_AMOUNT_CRP,--已确认代收代付
+       SUM(FEES_NUM.EFBF_TAX_AMOUNT_NRP) AS EFBF_TAX_AMOUNT_NRP--未确认代收代付
+ FROM
+  (SELECT distinct EOOR.EOOR_ID,
+       EOOR.EOOR_ESCO_ID,
+       EOOR.EOOR_ORDER_NO,
+       EOOR.EOOR_SO_NO,
+       EOOR.EOOR_DO_NO,
+       EOOR.EOOR_CUSTOM_EBCU_ID,
+       EOOR.EOOR_CUSTOM_EBCU_NAME,
+       EOOR.EOOR_EBPJ_ID,
+       EOOR.EOOR_EBPJ_NAME,
+       EOOR.CREATOR,
+       EOOR.EOOR_IS_SETTLEMENT_UPLOAD,
+       EOOR.EOOR_ORDER_FUDEJI,
+       ESUS.ESUS_USER_NAME_CN,
+       EFBF.EFBF_TYPE,--显示金额全部改为不含税价折成本位币 20150519 wesley
+        CASE WHEN EFBF.EFBF_STATUS != 0 AND EFBF.EFBF_TYPE='R' AND EFBF.EFBF_EXCHANGE_RATE IS NOT NULL THEN
+          round(SUM(EFBF.EFBF_TAX_FEE) * EFBF.EFBF_EXCHANGE_RATE,2)
+          WHEN EFBF.EFBF_STATUS != 0 AND EFBF.EFBF_TYPE='R' THEN
+          round(SUM(EFBF.EFBF_TAX_FEE),2) END AS EFBF_TAX_AMOUNT_CR,--已确认应收
+        CASE WHEN EFBF.EFBF_STATUS != 0 AND EFBF.EFBF_TYPE='P' AND EFBF.EFBF_EXCHANGE_RATE IS NOT NULL THEN
+          round(SUM(EFBF.EFBF_TAX_FEE) * EFBF.EFBF_EXCHANGE_RATE,2)
+          WHEN EFBF.EFBF_STATUS != 0 AND EFBF.EFBF_TYPE='P' THEN
+          round(SUM(EFBF.EFBF_TAX_FEE),2) END AS EFBF_TAX_AMOUNT_CP,--已确认应付
+        CASE WHEN EFBF.EFBF_STATUS = 0 AND EFBF.EFBF_TYPE='R' AND EFBF.EFBF_EXCHANGE_RATE IS NOT NULL THEN
+          round(SUM(EFBF.EFBF_TAX_FEE) * EFBF.EFBF_EXCHANGE_RATE,2)
+          WHEN EFBF.EFBF_STATUS = 0 AND EFBF.EFBF_TYPE='R' THEN
+          round(SUM(EFBF.EFBF_TAX_FEE),2) END AS EFBF_TAX_AMOUNT_NR,--未确认应收
+        CASE WHEN EFBF.EFBF_STATUS = 0 AND EFBF.EFBF_TYPE='P' AND EFBF.EFBF_EXCHANGE_RATE IS NOT NULL THEN
+          round(SUM(EFBF.EFBF_TAX_FEE) * EFBF.EFBF_EXCHANGE_RATE,2)
+          WHEN EFBF.EFBF_STATUS = 0 AND EFBF.EFBF_TYPE='P'  THEN
+          round(SUM(EFBF.EFBF_TAX_FEE),2) END AS EFBF_TAX_AMOUNT_NP,--未确认应付
+        CASE WHEN EFBF.EFBF_STATUS != 0 AND EFBF.EFBF_EXCHANGE_RATE IS NOT NULL AND (EFBF.EFBF_TYPE='RR' OR EFBF.EFBF_TYPE='RP') THEN
+          round(SUM(EFBF.EFBF_TAX_FEE) * EFBF.EFBF_EXCHANGE_RATE,2)
+          WHEN EFBF.EFBF_STATUS != 0 AND (EFBF.EFBF_TYPE='RR' OR EFBF.EFBF_TYPE='RP') THEN
+          round(SUM(EFBF.EFBF_TAX_FEE),2) END AS EFBF_TAX_AMOUNT_CRP,--已确认代收代付
+        CASE WHEN EFBF.EFBF_STATUS = 0 AND EFBF.EFBF_EXCHANGE_RATE IS NOT NULL AND (EFBF.EFBF_TYPE='RR' OR EFBF.EFBF_TYPE='RP') THEN
+          round(SUM(EFBF.EFBF_TAX_FEE) * EFBF.EFBF_EXCHANGE_RATE,2)
+          WHEN EFBF.EFBF_STATUS = 0 AND (EFBF.EFBF_TYPE='RR' OR EFBF.EFBF_TYPE='RP') THEN
+          round(SUM(EFBF.EFBF_TAX_FEE),2) END AS EFBF_TAX_AMOUNT_NRP--未确认代收代付
+        from 
+         (select (case when eoor.creator='System' then '1' else eoor.creator end) as creatorNumber ,eoor.* from eo_order eoor  ) EOOR
+        left join ES_USER ESUS on EOOR.creatorNumber=ESUS.ESUS_ID
+        left join EF_BUSINESS_FEES EFBF on EFBF.EFBF_EOOR_ID = EOOR.EOOR_ID 
+        WHERE 1=1
+        --AND EOOR.EOOR_ORDER_NO='ORD14022702161'
+        <if test="sqlCond.eoorIds !='' and sqlCond.eoorIds !=null">
+	   	   AND  EOOR.EOOR_ID in #{sqlCond.eoorIds}
+	   </if>
+        <if test="sqlCond.eoorEscoId !='' and sqlCond.eoorEscoId !=null">
+	   	   AND  EOOR.EOOR_ESCO_ID=#{sqlCond.eoorEscoId}
+	   </if>
+        <if test="sqlCond.eoorEscoId !='' and sqlCond.eoorIds !=null">
+	   	   AND  EOOR.EOOR_EBPJ_ID=#{sqlCond.eoorEbpjId}
+	   </if>
+        GROUP BY EOOR.EOOR_ID,
+                 EOOR.EOOR_ESCO_ID,
+                 EOOR.EOOR_ORDER_NO,
+                 EOOR.EOOR_SO_NO,
+                 EOOR.EOOR_DO_NO,
+                 EOOR.EOOR_ORDER_FUDEJI,
+                 EOOR.EOOR_CUSTOM_EBCU_ID,
+                 EOOR.EOOR_CUSTOM_EBCU_NAME,
+                 EOOR.EOOR_EBPJ_ID,
+                 EOOR.EOOR_EBPJ_NAME,
+                 EOOR.CREATOR,
+                 ESUS.ESUS_USER_NAME_CN,
+                 EFBF.EFBF_STATUS,
+                 EFBF.EFBF_TYPE,
+                 EFBF.EFBF_EXCHANGE_RATE,
+                 EOOR.EOOR_IS_SETTLEMENT_UPLOAD) FEES_NUM
+WHERE 1=1
+  GROUP BY FEES_NUM.EOOR_ID,
+           FEES_NUM.EOOR_ESCO_ID,
+           FEES_NUM.EOOR_ORDER_NO,
+           FEES_NUM.EOOR_SO_NO,
+           FEES_NUM.EOOR_DO_NO,
+           FEES_NUM.EOOR_CUSTOM_EBCU_ID,
+           FEES_NUM.EOOR_CUSTOM_EBCU_NAME,
+           FEES_NUM.EOOR_EBPJ_ID,
+           FEES_NUM.EOOR_EBPJ_NAME,
+           FEES_NUM.CREATOR,
+           FEES_NUM.EOOR_ORDER_FUDEJI,
+           FEES_NUM.ESUS_USER_NAME_CN,
+           FEES_NUM.EOOR_IS_SETTLEMENT_UPLOAD
+   
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

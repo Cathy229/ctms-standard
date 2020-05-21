@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.customerproject.mapper"> 
+    <select id="CompanyByPathQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+SELECT ESCO.ESCO_ID,
+       ESCO.ESCO_PARENT_ESCO_ID,
+       ESCO.ESCO_EBPL_CITY_ID,
+       ESCO.ESCO_COMPANY_NO,
+       ESCO.ESCO_COMPANY_NAME_CN,
+       ESCO.ESCO_COMPANY_NAME_EN,
+       ESCO.ESCO_SEND_CODE,
+       ESCO.ESCO_ADDRESS_CN,
+       ESCO.ESCO_ADDRESS_EN,
+       ESCO.ESCO_POSTALCODE,
+       ESCO.ESCO_FAX,
+       ESCO.ESCO_URL,
+       ESCO.ESCO_BUSINESS_NO,
+       ESCO.ESCO_PHONE,
+       ESCO.ESCO_TAX_NO,
+       ESCO.ESCO_CURRENCY,
+       ESCO.ESCO_FINANCE_CODE,
+       ESCO.ESCO_STATUS,
+       ESCO.ESCO_CDH_CODE,
+       ESCO.ESCO_SUBSTR1,
+       ESCO.ESCO_SUBSTR2,
+       ESCO.ESCO_SUBSTR3,
+       ESCO.ESCO_SUBSTR4,
+       ESCO.ESCO_SUBSTR5, 
+       ESCO.ESCO_SUBSTR6,
+       ESCO.ESCO_SUBSTR7,
+       ESCO.ESCO_SUBSTR8,
+       ESCO.ESCO_SUBDATE1,
+       ESCO.ESCO_SUBDATE2,
+       ESCO.ESCO_SUBDATE3,
+       ESCO.ESCO_SUBDATE4,
+       ESCO.ESCO_SUBNUM1,
+       ESCO.ESCO_SUBNUM2,
+       ESCO.ESCO_SUBNUM3,
+       ESCO.REC_VER,
+       ESCO.CREATE_TIME,
+       ESCO.CREATOR,
+       ESCO.MODIFY_TIME,
+       ESCO.MODIFIER,
+       ESCO.ESCO_PATH
+  FROM ES_COMPANY ESCO
+ WHERE 1=1
+<if test="sqlCond.escoPath !='' and sqlCond.escoPath !=null">
+	AND ESCO.ESCO_PATH like #{sqlCond.escoPath}  
+</if>
+ ORDER BY ESCO.ESCO_PATH
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

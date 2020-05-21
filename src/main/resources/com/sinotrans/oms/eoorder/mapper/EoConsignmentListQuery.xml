@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.eoorder.mapper"> 
+    <select id="EoConsignmentListQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+
+		
+		
+SELECT EOCS.EOCS_ID,
+       EOCS.EOCS_CONSIGNMENT_NO,
+       EOCS.EOCS_SO_NO,--SONO
+       EOCS.EOCS_DO_NO,--DONO
+       EOCS.EOCS_TYPE,
+       EOCS.EOCS_CONSIGNOR_EBCU_NAME,
+       EOCS.EOCS_START_EBRG_NAME_CN,
+       EOCS.EOCS_END_EBRG_NAME_CN,
+       EOCS.EOCS_ORDER_DATE,
+       EOCS.EOCS_ORDER_FUDEJI,
+       EOCS.EOCS_SHIPPER_EBSP_NAME_CN,
+       EOCS.EOCS_CONSIGNEE_EBSP_NAME_CN,
+       EOCS.CREATE_TIME,
+       EOCS.EOCS_IS_ISSUED_END
+FROM EO_CONSIGNMENT EOCS
+WHERE 1 = 1
+	and eocs.EOCS_DATA_SOURCE = '11'
+   <if test="sqlCond.eocsId !='' and sqlCond.eocsId !=null">
+   	   AND  EOCS.EOCS_ID=#{sqlCond.eocsId}
+   </if>
+   <if test="sqlCond.eocsConsignmentNo !='' and sqlCond.eocsConsignmentNo !=null">
+   	   AND  EOCS.EOCS_CONSIGNMENT_NO=#{sqlCond.eocsConsignmentNo}
+   </if>
+   <if test="sqlCond.eocsSoNo !='' and sqlCond.eocsSoNo !=null">
+   	   AND  EOCS.EOCS_SO_NO=#{sqlCond.eocsSoNo}
+   </if>
+   <if test="sqlCond.eocsDoNo !='' and sqlCond.eocsDoNo !=null">
+   	   AND  EOCS.EOCS_DO_NO=#{sqlCond.eocsDoNo}
+   </if>
+   <if test="sqlCond.eocsType !='' and sqlCond.eocsType !=null">
+   	   AND  EOCS.EOCS_TYPE=#{sqlCond.eocsType}
+   </if>
+   <if test="sqlCond.eocsConsignorEbcuCode !='' and sqlCond.eocsConsignorEbcuCode !=null">
+   	   AND  EOCS.EOCS_CONSIGNOR_EBCU_Code=#{sqlCond.eocsConsignorEbcuCode}
+   </if>
+   <if test="sqlCond.eocsStartEbrgNameCn !='' and sqlCond.eocsStartEbrgNameCn !=null">
+   	   AND  EOCS.EOCS_START_EBRG_NAME_CN=#{sqlCond.eocsStartEbrgNameCn}
+   </if>
+   <if test="sqlCond.eocsEndEbrgNameCn !='' and sqlCond.eocsEndEbrgNameCn !=null">
+   	   AND  EOCS.EOCS_END_EBRG_NAME_CN=#{sqlCond.eocsEndEbrgNameCn}
+   </if>
+   <if test="sqlCond.eocsOrderDate !='' and sqlCond.eocsOrderDate !=null">
+   	   AND  EOCS.EOCS_ORDER_DATE=#{sqlCond.eocsOrderDate}
+   </if>
+   <if test="sqlCond.eocsOrderFudeji !='' and sqlCond.eocsOrderFudeji !=null">
+   	   AND  EOCS.EOCS_ORDER_FUDEJI=#{sqlCond.eocsOrderFudeji}
+   </if>
+   <if test="sqlCond.eocsShipperEbspNameCn !='' and sqlCond.eocsShipperEbspNameCn !=null">
+   	   AND  EOCS.EOCS_SHIPPER_EBSP_NAME_CN=#{sqlCond.eocsShipperEbspNameCn}
+   </if>
+   <if test="sqlCond.eocsShipperEbspId !='' and sqlCond.eocsShipperEbspId !=null">
+   	   AND  EOCS.EOCS_SHIPPER_EBSP_ID=#{sqlCond.eocsShipperEbspId}
+   </if>
+   <if test="sqlCond.eocsShipperEbspCode !='' and sqlCond.eocsShipperEbspCode !=null">
+   	   AND  EOCS.EOCS_SHIPPER_EBSP_CODE=#{sqlCond.eocsShipperEbspCode}
+   </if>
+   <if test="sqlCond.eocsConsigneeEbspNameCn !='' and sqlCond.eocsConsigneeEbspNameCn !=null">
+   	   AND  EOCS.EOCS_CONSIGNEE_EBSP_NAME_CN=#{sqlCond.eocsConsigneeEbspNameCn}
+   </if>
+   <if test="sqlCond.eocsConsigneeEbspId !='' and sqlCond.eocsConsigneeEbspId !=null">
+   	   AND  EOCS.EOCS_CONSIGNEE_EBSP_ID=#{sqlCond.eocsConsigneeEbspId}
+   </if>
+   <if test="sqlCond.eocsConsigneeEbspCode !='' and sqlCond.eocsConsigneeEbspCode !=null">
+   	   AND  EOCS.EOCS_CONSIGNEE_EBSP_CODE=#{sqlCond.eocsConsigneeEbspCode}
+   </if>
+   <if test="sqlCond.eocs_fields !='' and sqlCond.eocs_fields !=null">
+   	   AND(		
+    		    EOCS.EOCS_SO_NO like CONCAT(CONCAT('%',#{sqlCond.eocs_fields}),'%')
+    		OR  EOCS.EOCS_DO_NO like CONCAT(CONCAT('%',#{sqlCond.eocs_fields}),'%')
+    		OR  EOCS.EOCS_CONSIGNMENT_NO like CONCAT(CONCAT('%',#{sqlCond.eocs_fields}),'%')
+	      )
+   </if>
+   <if test="sqlCond.isIssued !='' and sqlCond.isIssued !=null">
+   	   AND  EOCS.EOCS_IS_ISSUED_END=#{sqlCond.isIssued}
+   </if>
+   <if test="sqlCond.isUnIssued !='' and sqlCond.isUnIssued !=null">
+   	   AND (EOCS.EOCS_IS_ISSUED_END IS NULL  OR  EOCS.EOCS_IS_ISSUED_END = #{sqlCond.isUnIssued} )
+   </if>
+   ORDER BY EOCS.CREATE_TIME DESC
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

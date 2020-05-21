@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sinotrans.oms.eoor.mapper">
+	<select id="EtV4TaskPlanListQuery" parameterType="map" resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+		select ETTA.ETTA_ID,
+    ETTA.ETTA_ETOR_ID,
+    ETTA.ETTA_ESCO_ID,
+    ETTA.ETTA_ETSP_ID,
+    ETTA.ETTA_NO,
+    ETTA.ETTA_SPLIT_STATUS,
+    ETTA.ETTA_TYPE,
+    ETTA.ETTA_STATUS,
+    ETTA.ETTA_ORDER,
+    ETTA.ETTA_SELF_ID,
+    ETTA.ETTA_SO_NO,
+    ETTA.ETTA_DO_NO,
+    ETTA.ETTA_LAND_EBCU_ID,
+    ETTA.ETTA_LAND_EBCU_NAME_CN,
+    ETTA.ETTA_CUSTOMER_EBCU_ID,
+    ETTA.ETTA_CUSTOMER_EBCU_NAME_CN,
+    ETTA.ETTA_URGENCY,
+    TO_CHAR(ETOR.ETOR_REQ_DELIVERY_DATE, 'yyyy-mm-dd') ETOR_REQ_DELIVERY_DATE,
+    TO_CHAR(ETOR.ETOR_REQ_ARRIVAL_DATE,'yyyy-mm-dd') ETOR_REQ_ARRIVAL_DATE,
+    ETTA.ETTA_TASK_SCHEDULE_TIME,
+    ETTA.ETTA_MENTION_TIME,
+    ETTA.ETTA_TRANS_SPE_REQ,
+    ETTA.ETTA_RECEIVE_SPE_REQ,
+    ETTA.ETTA_LINE_DESC,
+    ETTA.ETTA_CONTAINER_TYPE,
+    ETTA.ETTA_CONTAINER_WEIGHT,
+    ETTA.ETTA_IS_WHITE_CARD,
+    ETTA.ETTA_IS_SHORT_BARGE,
+    ETTA.ETTA_IS_CHARTERED,
+    ETTA.ETTA_IS_TO_FIGHT,
+    ETTA.ETTA_FROM_EBRG_ID,
+    ETTA.ETTA_FROM_EBRG_NAME_CN,
+    ETTA.ETTA_TO_EBRG_ID,
+    ETTA.ETTA_TO_EBRG_NAME_CN,
+    ETTA.ETTA_WEIGHT,
+    ETTA.ETTA_QUANTITY,
+    ETTA.ETTA_VOLUME,
+    ETTA.ETTA_DELIVERY_ADDRESS,
+    ETTA.ETTA_RECEIVE_ADDRESS,
+    ETTA.ETTA_REMARK,
+    ETTA.ETTA_LIBRARY_NO,
+    ETTA.ETTA_LIBRARY_TIME,
+    ETTA.ETTA_EBCU_ID,
+    ETTA.ETTA_EBCU_NAME_CN,
+    ETTA.ETTA_LIBRARY_NUMBER,
+    ETTA.ETTA_LIBRARY_QUANTITY,
+    ETTA.ETTA_LIBRARY_VOLUME,
+    ETTA.ETTA_LIBRARY_GW,
+    ETTA.ETTA_LIBRARY_NW,
+    ETTA.ETTA_BOOKING_EBCU_ID,
+    ETTA.ETTA_BOOKING_EBCU_NAME_CN,
+    ETTA.ETTA_BOOKING_NO,
+    ETTA.ETTA_CUSTOM_NO,
+    ETTA.ETTA_VESSEL,
+    ETTA.ETTA_VOYAGE,
+    ETTA.ETTA_DEPARTURE_DATE,
+    ETTA.ETTA_PLAN_DEPARTURE_DATE,
+    ETTA.ETTA_PLAN_ARRIVAL_DATE,
+    ETTA.ETTA_ARRIVAL_DATE,
+    ETTA.ETTA_PACKING_TIME,
+    ETTA.ETTA_SET_POST_TIME,
+    ETTA.ETTA_WEIGHT_TIME,
+    ETTA.ETTA_CUT_TIME,
+    ETTA.ETTA_START_EBPT_ID,
+    ETTA.ETTA_START_EBPT_NAME_CN,
+    ETTA.ETTA_END_EBPT_ID,
+    ETTA.ETTA_END_EBPT_NAME_CN,
+    ETTA.ETTA_MBL_NO,
+    ETTA.ETTA_HBL_NO,
+    ETTA.ETTA_ETCA_ID,
+    ETTA.ETTA_ETCA_NO,
+    ETTA.ETTA_TITLE_NO,
+    ETTA.ETTA_CUSTOM_TYPE,
+    ETTA.ETTA_FILE_NO,
+    ETTA.ETTA_FILE_TYPE,
+    ETTA.ETTA_RELEASE_TIME,
+    ETTA.ETTA_SEND_TIME,
+    ETTA.ETTA_BACK_TIME,
+    ETTA.ETTA_CUSTOM_PLACE,
+    ETTA.ETTA_PORT_EBCU_ID,
+    ETTA.ETTA_PORT_EBCU_NAME_CN,
+    ETTA.ETTA_PORT_ADDRESS,
+    ETTA.ETTA_PACKING_ADDRESS,
+    ETTA.ETTA_TALLY_DATE,
+    ETTA.ETTA_CUT_POST_DATE,
+    ETTA.ETTA_SUITCASE_TIME,
+    ETTA.ETTA_SUITCASE_ADDRESS,
+    ETTA.ETTA_IN_POST_DATE,
+    ETTA.ETTA_UP_SHIPPING_DATE,
+    ETTA.ETTA_REQ_ARRIVAL,
+    ETTA.ETTA_ACTUAL_ARRIVAL,
+    ETTA.ETTA_CONTACT,
+    ETTA.ETTA_SENT_CAR_INFO,
+    ETTA.ETTA_LEAVE_TIME,
+    ETTA.ETTA_DEPARTURE_REMARK,
+    ETTA.ETTA_PACKAGING,
+    ETTA.ETTA_PREENTRY_DATE,
+    ETTA.ETTA_PORT_TIME,
+    ETTA.ETTA_CHECK_DATE,
+    ETTA.ETTA_IS_SEWAGE_TANK,
+    ETTA.ETTA_PERFORM_DESC,
+    ETTA.ETTA_MODIFIER,
+    ETTA.ETTA_MODIFY_TIME,
+    ETTA.ETTA_CREATOR,
+    ETTA.ETTA_CREATE_TIME,
+    ETTA.ETTA_PACKAGE_REMARK,
+    ETTA.ETTA_INSPECTE_DATE,
+    ETTA.ETTA_CHECK_DESC,
+    ETTA.ETTA_IN_OUT,
+    ETTA.ETTA_RETURN_TANK_ADDRESS,
+    ETTA.ETTA_BACK_TANK_TIME,
+    ETTA.ETTA_PLAN_DELIVERY_DATE,
+    ETTA.ETTA_IS_DROP_TANK,
+    ETTA.ETTA_COLLECT_DATE,
+    ETTA.ETTA_CUSTOM_START_DATE,
+    ETTA.ETTA_CHANGE_DATE,
+    ETTA.ETTA_OBTAIN_DATE,
+    ETTA.ETTA_IN_PARK_TIME,
+    ETTA.ETTA_OUT_PARK_TIME,
+    ETTA.ETTA_IS_PORT_PLAN,
+    ETTA.ETTA_CUSTOM_END_DATE,
+    ETTA.ETTA_IN_WAREHOUSE_DATE,
+    ETTA.ETTA_FINISHED_DATE,
+    ETTA.ETTA_PAY_TAX_DATE,
+    ETTA.ETTA_TRAIN,
+    ETTA.ETTA_STOP_STATION_TIME,
+    ETTA.ETTA_STATION_TIME,
+    ETTA.ETTA_RAILWAY_TIME,
+    ETTA.ETTA_RETURN_DATE,
+    ETTA.ETTA_TEAM_EBCU_ID,
+    ETTA.ETTA_TEAM_EBCU_NAME_CN,
+    ETTA.ETTA_TERMINAL_EBCU_ID,
+    ETTA.ETTA_TERMINAL_EBCU_NAME_CN,
+    ETTA.ETTA_SUITCASE,
+    ETTA.ETTA_CRATES,
+    ETTA.ETTA_MAIN_ETTP_ID,
+    ETTA.ETTA_TRAILER_ETVE_CARD,
+    ETTA.ETTA_TRAILER_ETVE_ID,
+    ETTA.ETTA_TRACTOR_ETVE_CARD,
+    ETTA.ETTA_TRACTOR_ETVE_ID,
+    ETTA.ETTA_MAIN_ETTP_NAME,
+    ETTA.ETTA_COPILOR_ETTP_ID,
+    ETTA.ETTA_COPILOR_ETTP_NAME,
+    ETTA.ETTA_LAND_ETCA_ID,
+    ETTA.ETTA_LAND_ETCA_NO,
+    ETTA.ETTA_LAND_TITLE_NO,
+    ETTA.ETTA_ETTP_TEL,
+    ETTA.ETTA_CARRIER_EBCU_ID,
+    ETTA.ETTA_CARRIER_EBCU_NAME_CN,
+    ETTA.ETTA_EBLN_ID,
+    ETTA.ETTA_EBLN_LINE_NAME,
+    ETTA.ETTA_IS_WITHIN,
+    ETTA.ETTA_RATE_MILEAGE,
+    ETTA.ETTA_SUBNUM1,
+    ETTA.ETTA_SUBSTR1,
+    ETTA.ETTA_SUBSTR2,
+    ETTA.ETTA_SUBSTR3,
+    ETTA.ETTA_SUBSTR4,
+    ETTA.ETTA_SUBSTR5,
+    ETTA.ETTA_SUBSTR6,
+    ETTA.ETTA_SUBSTR8,
+    ETTA.ETTA_SUBSTR7,
+    ETTA.ETTA_SUBDATE1,
+    ETTA.ETTA_SUBDATE2,
+    ETTA.ETTA_SUBDATE5,
+    ETTA.ETTA_SUBDATE4,
+    ETTA.ETTA_SUBDATE3,
+    ETTA.ETTA_SUBNUM3,
+    ETTA.ETTA_SUBNUM2,
+    ETTA.CREATOR,
+    TO_CHAR(ETTA.CREATE_TIME,'yyyy-mm-dd') CREATE_TIME,
+    ETTA.MODIFIER,
+    TO_CHAR(ETTA.MODIFY_TIME,'yyyy-mm-dd') MODIFY_TIME,
+    ETTA.REC_VER,
+    ETTA.ETTA_TRAILER_EBCU_ID,
+    ETTA.ETTA_TRAILER_NAME_CN,
+    ETTA.ETTA_SUITCASE_EBRG_ID,
+    ETTA.ETTA_CRATES_EBRG_ID,
+    ETTA.ETTA_QUANTITY_UNIT,
+    ETTA.ETTA_NUMBER_UNIT,
+    ETTA.ETTA_VOIDER,
+    ETTA.ETTA_VOIDER_TIME,
+    ETTA.ETTA_VOID_DESC,
+    ETTA.ETTA_DELIVERY_TIME,
+    ETTA.ETTA_ARRIVAL_TIME,
+    ETTA.ETTA_LOAD_SEQ,
+    ETTA.ETTA_UN_LOAD_SEQ,
+    ETTA.ETTA_CERTIFICATION_NAME_LIST,
+    ETTA.ETTA_NET_WEIGHT,
+    ETTA.ETTA_GROUP_NUM,
+    ETTA.ETTA_TRACTOR_REQ,
+    ETTA.ETTA_TRAILER_REQ,
+    ETTA.ETTA_TRANSPORT_REQ,
+    ETTA.ETTA_FK_SYS_ID,
+    ETTA.ETTA_SOURCE_SYS_FALG,
+    ETTA.ETTA_SCHEDULE_ID,
+    ETTA.ETTA_SCHEDULE_NAME,
+    ETOR.ETOR_EBPJ_ID,
+    ETOR.ETOR_EBPJ_NAME,
+     ETOR.ETOR_CONSIGNEE_EBSP_ID,
+    ETOR.ETOR_CONSIGNEE_EBSP_NAME_CN,
+    ETOR.ETOR_OPERATE_ESST_ID,
+    ETOR.ETOR_ORDER_FUDEJI,
+    ETOR.ETOR_CHARGEOFF,
+  OM_1.ETOM_EBMA_IS_TEMPERATURE,
+  OM_1.ETOM_TYPE,
+  ETTA.ETTA_ETSP_ID as GROUP_FIELD
+  from ET_TASK ETTA
+  left join ET_ORDER ETOR on ETOR.ETOR_ID = ETTA.ETTA_ETOR_ID
+  left join (select ETTM_ID , ETTM_ETTA_ID , ETTM_ETOM_ID
+               from (select ETTM.ETTM_ID,
+                    ETTM.ETTM_ETTA_ID,
+                    ETTM.ETTM_ETOM_ID,
+                    row_number() over(partition by ETTM.ETTM_ETTA_ID order by ETTM.ETTM_ID) as num1
+               from ET_TASK_MATERIEL ETTM, ET_TASK ETTA
+               WHERE ETTM.ETTM_ETTA_ID = ETTA.ETTA_ID
+                <if test="sqlCond.escoId !='' and sqlCond.escoId !=null">
+                   AND ETTA.ETTA_ESCO_ID =#{sqlCond.escoId}
+                 </if>
+               ) where num1 = 1) ETTM_2
+  on ETTM_2.ETTM_ETTA_ID =ETTA.ETTA_ID               
+  left join ET_ORDER_MATERIEL OM_1 on OM_1.ETOM_ID = ETTM_2.ETTM_ETOM_ID 
+left join ET_SCHEDULE_PLAN ETSP on ETSP.ETSP_ID = ETTA.ETTA_ETSP_ID
+ where 1 = 1
+   and ETTA.ETTA_ETSP_ID is null
+   and ( (ETTA_TYPE='TASK_LAND' and ETTA_STATUS = 'NO_ACTION' ) or ETTA_TYPE='TASK_EXPORT_TRAILER' or ETTA_TYPE='TASK_IMPORT_TRAILER' )
+   and ETTA.ETTA_SPLIT_STATUS = '0'
+   AND etta.etta_is_intelscheduling is null
+   and (ETOR.ETOR_STATUS = 'SUBMIT' or ETOR.ETOR_STATUS='DOING')
+   <if test="sqlCond.escoId !='' and sqlCond.escoId !=null">
+          AND  ETTA_ESCO_ID =#{sqlCond.escoId}
+        </if>
+        <if test="sqlCond.ettaCarrierEbcuId !='' and sqlCond.ettaCarrierEbcuId !=null">
+          AND ETTA.ETTA_CARRIER_EBCU_ID =#{sqlCond.ettaCarrierEbcuId}
+        </if>
+          <if test="sqlCond.eoorOperateEsstId !='' and sqlCond.eoorOperateEsstId !=null">
+          AND ETOR.ETOR_OPERATE_ESST_ID =#{sqlCond.eoorOperateEsstId}
+        </if>
+         <if test="sqlCond.etorSubstr6 !='' and sqlCond.etorSubstr6 !=null">
+          AND ETOR.ETOR_SUBSTR6 =#{sqlCond.etorSubstr6}
+        </if>
+        <if test="sqlCond.eoorEbpjId !='' and sqlCond.eoorEbpjId !=null">
+          AND ETOR_EBPJ_ID =#{sqlCond.eoorEbpjId}
+        </if>
+         <if test="sqlCond.eoorOrderNo !='' and sqlCond.eoorOrderNo !=null">
+          AND ETOR_ORDER_NO =#{sqlCond.eoorOrderNo}
+        </if>
+        <if test="sqlCond.eoorSoNo !='' and sqlCond.eoorSoNo !=null">
+          AND ETTA.ETTA_SO_NO =#{sqlCond.eoorSoNo}
+        </if>
+        <if test="sqlCond.eoorScheduleId !='' and sqlCond.eoorScheduleId !=null">
+          AND ETTA.ETTA_SCHEDULE_ID=#{sqlCond.eoorScheduleId}
+        </if>
+        <if test="sqlCond.ettaArrivalReqTimeFrom !='' and sqlCond.ettaArrivalReqTimeFrom !=null">
+          AND to_char(ETTA_ARRIVAL_REQ_TIME,'yyyy-MM-dd') &gt;= #{sqlCond.ettaArrivalReqTimeFrom}
+        </if>
+        <if test="sqlCond.ettaArrivalReqTimeTo !='' and sqlCond.ettaArrivalReqTimeTo !=null">
+          AND to_char(ETTA_ARRIVAL_REQ_TIME,'yyyy-MM-dd') &lt;= #{sqlCond.ettaArrivalReqTimeTo}
+        </if>
+       <if test="sqlCond.createFrom !='' and sqlCond.createFrom !=null">
+          AND to_char(ETTA.CREATE_TIME,'yyyy-MM-dd') &gt;= #{sqlCond.createFrom}
+        </if>
+        <if test="sqlCond.createTo !='' and sqlCond.createTo !=null">
+          AND to_char(ETTA.CREATE_TIME,'yyyy-MM-dd') &lt;= #{sqlCond.createTo}
+        </if>
+       <if test="sqlCond.ettaDeliveryReqTimeFrom !='' and sqlCond.ettaDeliveryReqTimeFrom !=null">
+          AND to_char(ETTA_DELIVERY_REQ_TIME,'yyyy-MM-dd') &gt;= #{sqlCond.ettaDeliveryReqTimeFrom}
+        </if>
+         <if test="sqlCond.ettaDeliveryReqTimeTo !='' and sqlCond.ettaDeliveryReqTimeTo !=null">
+          AND to_char(ETTA_DELIVERY_REQ_TIME,'yyyy-MM-dd') &lt;= #{sqlCond.ettaDeliveryReqTimeTo}
+         </if>
+        <if test="sqlCond.ebrgId !='' and sqlCond.ebrgId !=null">
+          AND ETTA.ETTA_TO_EBRG_ID=#{sqlCond.ebrgId}
+        </if>
+   order by ETTA_URGENCY, ETTA_DELIVERY_REQ_TIME, MODIFY_TIME
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

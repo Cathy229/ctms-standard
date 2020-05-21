@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.eoorder.mapper"> 
+    <select id="EoOrderMaterialQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT *
+	  FROM EO_ORDER_MATERIEL EOOM
+	 WHERE 1 = 1
+	 <if test="sqlCond.eoomEoorId !='' and sqlCond.eoomEoorId !=null">
+       AND  EOOM.EOOM_EOOR_ID=#{sqlCond.eoomEoorId}
+     </if>
+     <if test="sqlCond.eoomMaterialNo !='' and sqlCond.eoomMaterialNo !=null">
+       AND  EOOM.EOOM_MATERIAL_NO=#{sqlCond.eoomMaterialNo}
+     </if>
+     <if test="sqlCond.eoomEbmaNameCn !='' and sqlCond.eoomEbmaNameCn !=null">
+       AND  EOOM.EOOM_EBMA_NAME_CN=#{sqlCond.eoomEbmaNameCn}
+     </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+	
+	<select id="EoOrderPrecontainerQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT *
+  		  FROM EO_ORDER_PRECONTAINER EOSR
+		 WHERE 1 = 1
+	 <if test="sqlCond.eosrEoorId !='' and sqlCond.eosrEoorId !=null">
+       AND  EOSR.EOSR_EOOR_ID=#{sqlCond.eosrEoorId}
+     </if>
+     <if test="sqlCond.eosrBatchNo !='' and sqlCond.eosrBatchNo !=null">
+       AND  EOSR.EOSR_BATCH_NO=#{sqlCond.eosrBatchNo}
+     </if>
+     <if test="sqlCond.eosrCntCustomized !='' and sqlCond.eosrCntCustomized !=null">
+       AND  EOSR.EOSR_CNT_CUSTOMIZED=#{sqlCond.eosrCntCustomized}
+     </if>
+     <if test="sqlCond.eosrCntCustomizedSize !='' and sqlCond.eosrCntCustomizedSize !=null">
+       AND  EOSR.EOSR_CNT_CUSTOMIZED_SIZE=#{sqlCond.eosrCntCustomizedSize}
+     </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+	
+	<select id="EoOrderContainerQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT *
+		  FROM EO_ORDER_CONTAINER EOOC
+		 WHERE 1 = 1
+	 <if test="sqlCond.eoocEoorId !='' and sqlCond.eoocEoorId !=null">
+       AND  EOOC.EOOC_EOOR_ID=#{sqlCond.eoocEoorId}
+     </if>
+     <if test="sqlCond.eoocEtcaNo !='' and sqlCond.eoocEtcaNo !=null">
+       AND  EOOC.EOOC_ETCA_NO=#{sqlCond.eoocEtcaNo}
+     </if>
+     <if test="sqlCond.eoocContainerNo !='' and sqlCond.eoocContainerNo !=null">
+       AND  EOOC.EOOC_CONTAINER_NO=#{sqlCond.eoocContainerNo}
+     </if>
+     <if test="sqlCond.eoocContainerType !='' and sqlCond.eoocContainerType !=null">
+       AND  EOOC.EOOC_CONTAINER_TYPE=#{sqlCond.eoocContainerType}
+     </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+	
+	<select id="EoOrderImportContainerQuery" parameterType="map" resultType="hashmap">  
+		<include refid="util.PRE_SQL"></include>
+		SELECT EOOC.eooc_Id,
+			   EOOC.eooc_Etca_No,
+			   EOOC.eooc_Container_Size,
+			   EOOC.eooc_Container_Type,
+			   EOOC.eooc_Is_Soc,
+			   EOOC.eooc_Seal_No_1
+		  FROM EO_ORDER_CONTAINER EOOC
+		 WHERE 1 = 1
+	 <if test="sqlCond.eoocEoorId !='' and sqlCond.eoocEoorId !=null">
+       AND  EOOC.EOOC_EOOR_ID=#{sqlCond.eoocEoorId}
+     </if>
+     <if test="sqlCond.eoocEtcaNo !='' and sqlCond.eoocEtcaNo !=null">
+       AND  EOOC.EOOC_ETCA_NO=#{sqlCond.eoocEtcaNo}
+     </if>
+     <if test="sqlCond.eoocContainerNo !='' and sqlCond.eoocContainerNo !=null">
+       AND  EOOC.EOOC_CONTAINER_NO=#{sqlCond.eoocContainerNo}
+     </if>
+     <if test="sqlCond.eoocContainerType !='' and sqlCond.eoocContainerType !=null">
+       AND  EOOC.EOOC_CONTAINER_TYPE=#{sqlCond.eoocContainerType}
+     </if>
+     <if test="sqlCond.eoibEofiId !='' and sqlCond.eoibEofiId  !=null">
+      AND EOOC.EOOC_ID not in
+      (
+      SELECT 
+      	EOIB.EOIB_EOOC_ID
+        FROM EO_IMPORT_JOAB_BOX EOIB
+        WHERE  1=1
+        AND EOIB.EOIB_EOFI_ID = #{sqlCond.eoibEofiId}
+        <if test="sqlCond.eoibCCheck !='' and sqlCond.eoibCCheck !=null">
+        AND EOIB.EOIB_C_CHECK = #{sqlCond.eoibCCheck }
+        </if>
+        <if test="sqlCond.eoibQCheck !='' and sqlCond.eoibQCheck !=null">
+        AND EOIB.EOIB_Q_CHECK = #{sqlCond.eoibQCheck }
+        </if>
+      )
+     </if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

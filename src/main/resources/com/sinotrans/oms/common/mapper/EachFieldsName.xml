@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinotrans.oms.common.mapper">
+    <!-- 解析filedName 为数组的查询参数  -->
+	<sql id="COMMON_CONDITION_SQL">
+		    <if test="condition.fieldName.getClass().isArray()">
+		        <foreach collection="condition.fieldName" index="j" item="orField"
+					open="and (1=2" separator=" " close=")">
+					<choose>
+						<when test="condition.operator == 'likeStart'">
+							or ${orField} like #{condition.fieldValue}||'%'
+						</when>
+						<when test="condition.operator == 'likeEnd'">
+							or ${orField} like '%'||#{condition.fieldValue}
+						</when>
+						<when test="condition.operator == 'likeAnywhere'">
+							or ${orField} like '%'||#{condition.fieldValue}||'%'
+						</when>
+						<when test="condition.operator == 'ilike'">
+							or lower(${orField}) like
+							lower(#{condition.fieldValue})
+						</when>
+						<when test="condition.operator == 'ilikeStart'">
+							or lower(${orField}) like
+							lower(#{condition.fieldValue}||'%')
+						</when>
+						<when test="condition.operator == 'ilikeEnd'">
+							or lower(${orField}) like
+							lower('%'||#{condition.fieldValue})
+						</when>
+						<when test="condition.operator == 'ilikeAnywhere'">
+							or lower(${orField}) like
+							lower('%'||#{condition.fieldValue}||'%')
+						</when>
+						<when test="condition.operator == 'ieq'">
+							or lower(${orField}) = lower(#{condition.fieldValue})
+						</when>
+						<when test="condition.operator == 'isNull'">
+							or ${orField} is null
+						</when>
+						<when test="condition.operator == 'isNotNull'">
+							or ${orField} is not null
+						</when>
+						<otherwise>
+							or ${orField} ${condition.operator} #{condition.fieldValue}
+						</otherwise>
+					</choose>
+				</foreach>
+		    </if>
+	</sql>
+</mapper>

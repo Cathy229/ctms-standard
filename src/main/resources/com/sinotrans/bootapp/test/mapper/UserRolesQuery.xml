@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.sinotrans.bootapp.test.mapper"> 
+	<select id="UserRolesQuery" parameterType="map" resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+		  select CONCAT('ROLE_',ur.ruro_bsro_id) as role_name
+            from ruro_user_roles ur,bsur_users u
+           where u.bsur_id = ur.ruro_bsur_id
+             and u.bsur_username = #{sqlCond.bsurUsername}
+		  and <include refid="util.COMMON_DYN_SQL" />
+		  and <include refid="util.DATA_AUTH" />
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

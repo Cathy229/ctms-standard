@@ -1,0 +1,197 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sinotrans.oms</groupId>
+	<artifactId>ctms-standard</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.10.RELEASE</version>
+	</parent>
+	<properties>
+	<!-- 标注那个才是主要入口类 -->
+	    <start-class>com.sinotrans.oms.MyAppStandard</start-class>
+		<java.version>1.8</java.version>
+	</properties>
+	<dependencies>
+		<!-- fros支持 start -->
+		<dependency>
+			<groupId>com.sinotrans.frosboot</groupId>
+			<artifactId>frosboot</artifactId>
+			<version>1.1.2-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.sinotrans.frosboot</groupId>
+			<artifactId>frosboot-security</artifactId>
+			<version>1.1.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sinotrans.frosboot</groupId>
+			<artifactId>frosboot-tools</artifactId>
+			<version>1.1.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- fros支持 end -->
+		<!-- boot 其他组件支持 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<!-- 添加feign(声明显示调用，集成了断路Hystrix和负载均衡Ribbon)支持 -->
+	    <dependency>
+	        <groupId>org.springframework.cloud</groupId>
+	        <artifactId>spring-cloud-starter-feign</artifactId>
+	    </dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.boot</groupId> -->
+		<!-- <artifactId>spring-boot-starter-actuator</artifactId> -->
+		<!-- </dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>mysql</groupId> -->
+<!-- 			<artifactId>mysql-connector-java</artifactId> -->
+<!-- 		</dependency> -->
+		<!-- 热部署 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+        <!-- JWT Json Web Token 依赖 -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt</artifactId>
+		    <version>0.7.0</version>
+		</dependency>
+	    <!-- 添加fastjson 支持 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.15</version>
+        </dependency>
+        <!-- 添加redisCluster 支持 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+            <version>1.4.7.RELEASE</version>
+        </dependency>
+       
+        <!-- 添加发送邮件jar文件依赖  -->
+        <dependency>
+			 <groupId>javax.activation</groupId>
+			 <artifactId>activation</artifactId>
+			 <version>1.1</version>
+		</dependency>
+		<dependency>
+			 <groupId>javax.mail</groupId>
+			 <artifactId>mail</artifactId>
+			 <version>1.4</version>
+		</dependency>
+		<!-- com.jcraft依赖，上传FTP使用 -->
+		<dependency>
+		    <groupId>com.jcraft</groupId>
+		    <artifactId>jsch</artifactId>
+		    <version>0.1.51</version>
+		</dependency>
+		<!-- dom4j依赖 -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<!-- 增加ftpclient依赖 -->
+		<dependency>
+		    <groupId>commons-net</groupId>
+		    <artifactId>commons-net</artifactId>
+		    <version>3.3</version>
+		</dependency>
+		<!-- BASE64加密依赖 -->
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.10</version>
+		</dependency>
+		<!-- CXF依赖包 -->
+		<dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+            <version>3.2.4</version>
+		</dependency>
+		<!-- jxl Excel操作 -->
+		<dependency>
+		    <groupId>net.sourceforge.jexcelapi</groupId>
+		    <artifactId>jxl</artifactId>
+		    <version>2.6.12</version>
+		</dependency>
+		<!-- 引入POI处理文件 -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.17</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.0</version>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Camden.SR3</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

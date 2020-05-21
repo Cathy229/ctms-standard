@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sinotrans.oms.eoor.mapper">
+	<select id="EtVehicleByScheduleQuery" parameterType="map" resultType="hashmap">
+		<include refid="util.PRE_SQL"></include>
+		select eota.eota_id,etsp.etsp_tractor_etve_card from et_schedule_plan etsp
+			left join eo_task eota on eota.eota_etsp_id = etsp.etsp_id
+			left join eo_task_track eott on eott.eott_eota_id=eota.eota_id
+			where 1=1
+			and eott.eott_arrival_time is  null
+			<if test="sqlCond.etveCards !='' and sqlCond.etveCards !=null">
+			   AND  etsp.etsp_tractor_etve_card in #{sqlCond.etveCards}
+			</if>
+		<include refid="util.POST_SQL"></include>
+	</select>
+</mapper>

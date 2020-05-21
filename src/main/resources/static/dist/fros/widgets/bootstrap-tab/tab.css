@@ -1,0 +1,20 @@
+@charset "utf-8";
+.tabbar{
+	overflow: hidden; 
+	height: 27px;
+}
+.tabbar > li{
+}
+.tabbar > li > a{
+	padding-bottom: 0;
+	padding-top: 0;
+	background-color:#eeeeee;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+.tabbar > li > a > .closearrow{
+	font-size:19px;
+	font-weight:bold;
+}
